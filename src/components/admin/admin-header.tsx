@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import {
-  Search, Bell, LogOut, User, Moon, Sun, ChevronRight,
+  Search, Bell, LogOut, Moon, Sun, ChevronRight,
   Keyboard, Command, CheckCircle2, AlertCircle, Info,
 } from 'lucide-react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';

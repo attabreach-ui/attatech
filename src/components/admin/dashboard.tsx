@@ -4,16 +4,15 @@ import { cn, generateId } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
 import {
   LayoutDashboard, Settings, Rocket, Wrench, Star, BarChart3,
-  HelpCircle, LogOut, ChevronLeft, ChevronRight, Menu,
+  HelpCircle, LogOut, ChevronLeft, Menu,
   Plus, Trash2, Edit2, Check, EyeOff, Save, Loader2, X,
   TrendingUp, TrendingDown, Minus, ArrowUpRight, Activity,
-  Zap, FileText, MessageSquare, UserPlus, Globe, Calendar,
-  ChevronDown, ChevronUp, Sparkles, BarChart, LineChart as LineChartIcon,
+  ChevronDown, Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  BarChart as ReBarChart, Bar, PieChart, Pie, Cell,
+  PieChart, Pie, Cell,
 } from 'recharts';
 import { AdminHeader, type Notification } from './admin-header';
 import type { User } from '@supabase/supabase-js';
@@ -125,7 +124,6 @@ export function Dashboard({
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [editingFAQ, setEditingFAQ] = useState<FAQ | null>(null);
   const [editingStat, setEditingStat] = useState<Stat | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [activityFeed] = useState<ActivityItem[]>(generateMockActivity());
   const [collapsedCategories, setCollapsedCategories] = useState<Record<string, boolean>>({});
 
@@ -507,7 +505,7 @@ export function Dashboard({
           )}
 
           {activeTab === 'settings' && (
-            <SettingsEditor config={config} onSaveSettings={onSaveSettings} breadcrumbs={breadcrumbs} />
+            <SettingsEditor config={config} onSaveSettings={onSaveSettings} />
           )}
           {activeTab === 'projects' && (
             <ProjectsEditor config={config} onSaveProjects={onSaveProjects} editingProject={editingProject} setEditingProject={setEditingProject} />
@@ -649,11 +647,9 @@ export function DashboardSkeleton() {
 function SettingsEditor({
   config,
   onSaveSettings,
-  breadcrumbs,
 }: {
   config: SiteConfig;
   onSaveSettings: (partial: Partial<SiteConfig>) => Promise<string | null>;
-  breadcrumbs: { label: string; href?: string }[];
 }) {
   const [form, setForm] = useState({ ...config });
   const [saving, setSaving] = useState(false);
