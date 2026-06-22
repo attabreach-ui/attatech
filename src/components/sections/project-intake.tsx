@@ -45,9 +45,14 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
   };
 
   const handleSubmit = async () => {
+    const endpoint = config.formspreeEndpoint;
+    if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
+      toast.info('Form not configured yet. Please use WhatsApp to contact us.');
+      return;
+    }
     setSubmitting(true);
     try {
-      const res = await fetch(config.formspreeEndpoint, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({

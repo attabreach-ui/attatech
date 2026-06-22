@@ -24,7 +24,13 @@ export function Newsletter({ config }: NewsletterProps) {
 
     setSubmitting(true);
     try {
-      const res = await fetch(config.formspreeEndpoint, {
+      const endpoint = config.formspreeEndpoint;
+      if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
+        toast.info('Newsletter not configured yet.');
+        setSubmitting(false);
+        return;
+      }
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
