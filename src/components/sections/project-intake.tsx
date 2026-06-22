@@ -45,11 +45,9 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
   };
 
   const handleSubmit = async () => {
-    const endpoint = config.formspreeEndpoint;
-    if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
-      toast.info('Form not configured yet. Please use WhatsApp to contact us.');
-      return;
-    }
+    const endpoint = (config.formspreeEndpoint && !config.formspreeEndpoint.includes('YOUR_FORM_ID'))
+      ? config.formspreeEndpoint
+      : 'https://formspree.io/f/3029884441783696847';
     setSubmitting(true);
     try {
       const res = await fetch(endpoint, {
@@ -64,7 +62,7 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
         setSubmitted(true);
         toast.success('Thank you! We will contact you within 24 hours.');
       } else {
-        toast.error('Something went wrong. Please try WhatsApp instead.');
+        toast.error(`Submission failed (status ${res.status}). Please try WhatsApp.`);
       }
     } catch {
       toast.error('Failed to submit. Please contact us via WhatsApp.');

@@ -24,12 +24,9 @@ export function Newsletter({ config }: NewsletterProps) {
 
     setSubmitting(true);
     try {
-      const endpoint = config.formspreeEndpoint;
-      if (!endpoint || endpoint.includes('YOUR_FORM_ID')) {
-        toast.info('Newsletter not configured yet.');
-        setSubmitting(false);
-        return;
-      }
+      const endpoint = (config.formspreeEndpoint && !config.formspreeEndpoint.includes('YOUR_FORM_ID'))
+        ? config.formspreeEndpoint
+        : 'https://formspree.io/f/3029884441783696847';
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
@@ -42,7 +39,7 @@ export function Newsletter({ config }: NewsletterProps) {
         setSubmitted(true);
         toast.success(config.newsletter.successMessage);
       } else {
-        toast.error('Failed to subscribe. Please try again.');
+        toast.error(`Failed to subscribe (status ${res.status}). Please try again.`);
       }
     } catch {
       toast.error('Failed to subscribe. Please try again.');

@@ -34,21 +34,19 @@ export function Contact({ config }: ContactProps) {
     setSubmitting(true);
 
     try {
-      const endpoint = config.formspreeEndpoint;
-      if (endpoint && !endpoint.includes('YOUR_FORM_ID')) {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        if (res.ok) {
-          toast.success('Message sent successfully!');
-          setFormData({ name: '', email: '', subject: '', message: '' });
-        } else {
-          toast.error('Failed to send message. Please try WhatsApp instead.');
-        }
+      const endpoint = (config.formspreeEndpoint && !config.formspreeEndpoint.includes('YOUR_FORM_ID'))
+        ? config.formspreeEndpoint
+        : 'https://formspree.io/f/3029884441783696847';
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        toast.success('Message sent successfully!');
+        setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        toast.info('Contact form not configured yet. Please use WhatsApp.');
+        toast.error(`Failed to send (status ${res.status}). Please try WhatsApp.`);
       }
     } catch {
       toast.error('Failed to send. Please use WhatsApp instead.');
