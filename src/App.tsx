@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import type { Testimonial } from '@/types';
 import { useSiteConfig } from '@/hooks/use-site-config';
+import { useAdminAuth } from '@/hooks/use-admin-auth';
 import { Navbar } from '@/components/layout/navbar';
 import { Preloader } from '@/components/layout/preloader';
 import { Footer } from '@/components/layout/footer';
@@ -11,6 +12,11 @@ import { HomePage } from '@/pages/home';
 import { AdminPage } from '@/pages/admin';
 
 function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname === '/admin';
+
+  const { user } = useAdminAuth();
+
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return (
@@ -46,12 +52,15 @@ function App() {
 
   // Update <title> and meta description from live config
   useEffect(() => {
-    if (!configLoading && config.seo.title) {
+    if (!configLoading && config.seo.title && !isAdminRoute) {
       document.title = config.seo.title;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute('content', config.seo.description);
     }
-  }, [config.seo, configLoading]);
+    if (isAdminRoute) {
+      document.title = 'Dashboard — AttaTech Admin';
+    }
+  }, [config.seo, configLoading, isAdminRoute]);
 
   const toggleDarkMode = useCallback(() => {
     setDarkMode((prev) => !prev);
@@ -65,10 +74,10 @@ function App() {
   return (
     <div className={darkMode ? 'dark' : ''}>
       <CustomCursor />
-      {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+      {!preloaderDone && !isAdminRoute && <Preloader onComplete={() => setPreloaderDone(true)} />}
 
-      <div className={`transition-opacity duration-500 ${preloaderDone ? 'opacity-100' : 'opacity-0'}`}>
-        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      <div className={`transition-opacity duration-500 ${preloaderDone || isAdminRoute ? 'opacity-100' : 'opacity-0'}`}>
+        {!isAdminRoute && <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />}
 
         <Routes>
           <Route
@@ -92,6 +101,9 @@ function App() {
                 onSaveProjects={saveProjects}
                 onSaveFaqs={saveFaqs}
                 onRefetch={refetch}
+                user={user}
+                darkMode={darkMode}
+                toggleDarkMode={toggleDarkMode}
               />
             }
           />

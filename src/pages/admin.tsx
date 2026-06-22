@@ -4,6 +4,7 @@ import { useAdminAuth } from '@/hooks/use-admin-auth';
 import { LoginForm } from '@/components/admin/login-form';
 import { Dashboard } from '@/components/admin/dashboard';
 import { Loader2 } from 'lucide-react';
+import type { User } from '@supabase/supabase-js';
 
 interface AdminPageProps {
   config: SiteConfig;
@@ -13,6 +14,9 @@ interface AdminPageProps {
   onSaveProjects: (projects: Project[]) => Promise<string | null>;
   onSaveFaqs: (faqs: FAQ[]) => Promise<string | null>;
   onRefetch: () => Promise<void>;
+  user: User | null;
+  darkMode: boolean;
+  toggleDarkMode: () => void;
 }
 
 export function AdminPage({
@@ -23,6 +27,9 @@ export function AdminPage({
   onSaveProjects,
   onSaveFaqs,
   onRefetch,
+  user,
+  darkMode,
+  toggleDarkMode,
 }: AdminPageProps) {
   const { isAuthenticated, loading, login, logout } = useAdminAuth();
   const navigate = useNavigate();
@@ -55,6 +62,9 @@ export function AdminPage({
       onSaveFaqs={onSaveFaqs}
       onRefetch={onRefetch}
       onLogout={handleLogout}
+      user={user}
+      darkMode={darkMode}
+      toggleDarkMode={toggleDarkMode}
     />
   );
 }
