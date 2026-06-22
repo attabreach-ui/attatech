@@ -24,7 +24,7 @@ function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
     analytics: row.analytics as SiteConfig['analytics'] ?? defaultConfig.analytics,
     newsletter: row.newsletter as SiteConfig['newsletter'] ?? defaultConfig.newsletter,
     intake: row.intake as SiteConfig['intake'] ?? defaultConfig.intake,
-    formspreeEndpoint: (row.formspree_endpoint as string) ?? '',
+    formspreeEndpoint: ((row.formspree_endpoint as string) || '').includes('YOUR_FORM_ID') ? defaultConfig.formspreeEndpoint : ((row.formspree_endpoint as string) || defaultConfig.formspreeEndpoint),
   };
 }
 
