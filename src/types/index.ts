@@ -63,6 +63,86 @@ export interface SocialLinks {
   linkedin: string;
   github: string;
   twitter: string;
+  facebook: string;
+  instagram: string;
+  youtube: string;
+}
+
+export interface PricingTier {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  priceUnit: string;
+  features: string[];
+  highlighted: boolean;
+  ctaText: string;
+  sort_order?: number;
+}
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  coverImage: string;
+  author: string;
+  date: string;
+  tags: string[];
+  published: boolean;
+  slug: string;
+}
+
+export interface WhyChooseItem {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  sort_order?: number;
+}
+
+export interface ClientLogo {
+  id: string;
+  name: string;
+  logoUrl: string;
+  website: string;
+  sort_order?: number;
+}
+
+export interface AnalyticsConfig {
+  googleAnalyticsId: string;
+  microsoftClarityId: string;
+  metaPixelId: string;
+}
+
+export interface NewsletterConfig {
+  enabled: boolean;
+  title: string;
+  description: string;
+  buttonText: string;
+  successMessage: string;
+}
+
+export interface IntakeConfig {
+  enabled: boolean;
+  title: string;
+  description: string;
+  steps: IntakeStep[];
+}
+
+export interface IntakeStep {
+  id: string;
+  title: string;
+  fields: IntakeField[];
+}
+
+export interface IntakeField {
+  id: string;
+  label: string;
+  type: 'text' | 'email' | 'select' | 'textarea' | 'number';
+  required: boolean;
+  options?: string[];
+  placeholder: string;
 }
 
 export interface SiteConfig {
@@ -77,6 +157,7 @@ export interface SiteConfig {
     name: string;
     title: string;
     bio: string;
+    photo: string;
   };
   contact: ContactInfo;
   social: SocialLinks;
@@ -84,6 +165,8 @@ export interface SiteConfig {
     title: string;
     description: string;
     keywords: string;
+    ogImage: string;
+    canonicalUrl: string;
   };
   hero: {
     headline: string;
@@ -99,6 +182,13 @@ export interface SiteConfig {
   techStack: TechItem[];
   testimonials: Testimonial[];
   faqs: FAQ[];
+  pricing: PricingTier[];
+  blogPosts: BlogPost[];
+  whyChooseUs: WhyChooseItem[];
+  clientLogos: ClientLogo[];
+  analytics: AnalyticsConfig;
+  newsletter: NewsletterConfig;
+  intake: IntakeConfig;
   formspreeEndpoint: string;
 }
 

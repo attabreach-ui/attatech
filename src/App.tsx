@@ -10,11 +10,17 @@ import { BackToTop } from '@/components/layout/back-to-top';
 import { CustomCursor } from '@/components/custom/custom-cursor';
 import { HomePage } from '@/pages/home';
 import { AdminPage } from '@/pages/admin';
+import { PricingPage } from '@/pages/pricing';
+import { BlogPage } from '@/pages/blog';
+import { BlogPostPage } from '@/pages/blog-post';
+import { ProjectPage } from '@/pages/project';
+import { ScrollToTop } from '@/components/scroll-to-top';
+import { SEOHead } from '@/components/seo-head';
+import { AnalyticsScripts } from '@/components/analytics-scripts';
 
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname === '/admin';
-
   const { user } = useAdminAuth();
 
   const [darkMode, setDarkMode] = useState(() => {
@@ -38,6 +44,13 @@ function App() {
     saveServices,
     saveProjects,
     saveFaqs,
+    savePricing,
+    saveBlogPosts,
+    saveWhyChooseUs,
+    saveClientLogos,
+    saveAnalytics,
+    saveNewsletter,
+    saveIntake,
     refetch,
   } = useSiteConfig();
 
@@ -73,12 +86,15 @@ function App() {
 
   return (
     <div className={darkMode ? 'dark' : ''}>
+      <SEOHead config={config} pathname={location.pathname} />
+      <AnalyticsScripts config={config} />
       <CustomCursor />
       {!preloaderDone && !isAdminRoute && <Preloader onComplete={() => setPreloaderDone(true)} />}
 
       <div className={`transition-opacity duration-500 ${preloaderDone || isAdminRoute ? 'opacity-100' : 'opacity-0'}`}>
         {!isAdminRoute && <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />}
 
+        <ScrollToTop />
         <Routes>
           <Route
             path="/"
@@ -87,6 +103,42 @@ function App() {
                 <HomePage config={config} onUpdateTestimonials={updateTestimonials} />
                 <Footer config={config} />
                 <BackToTop />
+              </>
+            }
+          />
+          <Route
+            path="/pricing"
+            element={
+              <>
+                <PricingPage config={config} />
+                <Footer config={config} />
+              </>
+            }
+          />
+          <Route
+            path="/blog"
+            element={
+              <>
+                <BlogPage config={config} />
+                <Footer config={config} />
+              </>
+            }
+          />
+          <Route
+            path="/blog/:slug"
+            element={
+              <>
+                <BlogPostPage config={config} />
+                <Footer config={config} />
+              </>
+            }
+          />
+          <Route
+            path="/projects/:slug"
+            element={
+              <>
+                <ProjectPage config={config} />
+                <Footer config={config} />
               </>
             }
           />
@@ -100,6 +152,13 @@ function App() {
                 onSaveServices={saveServices}
                 onSaveProjects={saveProjects}
                 onSaveFaqs={saveFaqs}
+                onSavePricing={savePricing}
+                onSaveBlogPosts={saveBlogPosts}
+                onSaveWhyChooseUs={saveWhyChooseUs}
+                onSaveClientLogos={saveClientLogos}
+                onSaveAnalytics={saveAnalytics}
+                onSaveNewsletter={saveNewsletter}
+                onSaveIntake={saveIntake}
                 onRefetch={refetch}
                 user={user}
                 darkMode={darkMode}

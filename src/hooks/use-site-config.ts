@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { defaultConfig } from '@/data/site-config';
-import type { SiteConfig, Stat, Service, Project, FAQ, Testimonial } from '@/types';
+import type {
+  SiteConfig, Stat, Service, Project, FAQ, Testimonial,
+  PricingTier, BlogPost, WhyChooseItem, ClientLogo, AnalyticsConfig,
+  NewsletterConfig, IntakeConfig
+} from '@/types';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -13,6 +17,13 @@ function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
     social: row.social as SiteConfig['social'],
     seo: row.seo as SiteConfig['seo'],
     hero: row.hero as SiteConfig['hero'],
+    pricing: row.pricing as SiteConfig['pricing'] ?? defaultConfig.pricing,
+    blogPosts: row.blog_posts as SiteConfig['blogPosts'] ?? defaultConfig.blogPosts,
+    whyChooseUs: row.why_choose_us as SiteConfig['whyChooseUs'] ?? defaultConfig.whyChooseUs,
+    clientLogos: row.client_logos as SiteConfig['clientLogos'] ?? defaultConfig.clientLogos,
+    analytics: row.analytics as SiteConfig['analytics'] ?? defaultConfig.analytics,
+    newsletter: row.newsletter as SiteConfig['newsletter'] ?? defaultConfig.newsletter,
+    intake: row.intake as SiteConfig['intake'] ?? defaultConfig.intake,
     formspreeEndpoint: (row.formspree_endpoint as string) ?? '',
   };
 }
@@ -136,6 +147,13 @@ export function useSiteConfig() {
       social: partial.social,
       seo: partial.seo,
       hero: partial.hero,
+      pricing: partial.pricing,
+      blog_posts: partial.blogPosts,
+      why_choose_us: partial.whyChooseUs,
+      client_logos: partial.clientLogos,
+      analytics: partial.analytics,
+      newsletter: partial.newsletter,
+      intake: partial.intake,
       formspree_endpoint: partial.formspreeEndpoint,
       updated_at: new Date().toISOString(),
     });
@@ -145,7 +163,6 @@ export function useSiteConfig() {
   }, []);
 
   const saveStats = useCallback(async (stats: Stat[]): Promise<string | null> => {
-    // Delete all + reinsert is the simplest strategy for ordered lists
     const { error: delErr } = await supabase.from('stats').delete().neq('id', '__none__');
     if (delErr) return delErr.message;
     const rows = stats.map((s, i) => ({ ...s, sort_order: i }));
@@ -201,6 +218,83 @@ export function useSiteConfig() {
     return null;
   }, []);
 
+  const savePricing = useCallback(async (pricing: PricingTier[]): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      pricing: pricing,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, pricing }));
+    return null;
+  }, []);
+
+  const saveBlogPosts = useCallback(async (blogPosts: BlogPost[]): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      blog_posts: blogPosts,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, blogPosts }));
+    return null;
+  }, []);
+
+  const saveWhyChooseUs = useCallback(async (items: WhyChooseItem[]): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      why_choose_us: items,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, whyChooseUs: items }));
+    return null;
+  }, []);
+
+  const saveClientLogos = useCallback(async (logos: ClientLogo[]): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      client_logos: logos,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, clientLogos: logos }));
+    return null;
+  }, []);
+
+  const saveAnalytics = useCallback(async (analytics: AnalyticsConfig): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      analytics: analytics,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, analytics }));
+    return null;
+  }, []);
+
+  const saveNewsletter = useCallback(async (newsletter: NewsletterConfig): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      newsletter: newsletter,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, newsletter }));
+    return null;
+  }, []);
+
+  const saveIntake = useCallback(async (intake: IntakeConfig): Promise<string | null> => {
+    const { error } = await supabase.from('site_settings').upsert({
+      id: 1,
+      intake: intake,
+      updated_at: new Date().toISOString(),
+    });
+    if (error) return error.message;
+    setConfig((prev) => ({ ...prev, intake }));
+    return null;
+  }, []);
+
   return {
     config,
     loading,
@@ -211,5 +305,12 @@ export function useSiteConfig() {
     saveServices,
     saveProjects,
     saveFaqs,
+    savePricing,
+    saveBlogPosts,
+    saveWhyChooseUs,
+    saveClientLogos,
+    saveAnalytics,
+    saveNewsletter,
+    saveIntake,
   };
 }
