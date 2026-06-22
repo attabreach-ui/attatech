@@ -151,7 +151,6 @@ export function Dashboard({
   }, [activeTab]);
 
   const handleSearch = useCallback((query: string) => {
-    setSearchQuery(query);
     // Find matching tab and navigate
     const lower = query.toLowerCase();
     const match = allTabs.find((t) => t.label.toLowerCase().includes(lower));
