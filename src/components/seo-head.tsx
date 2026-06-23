@@ -77,7 +77,7 @@ export function SEOHead({ config, pathname }: SEOHeadProps) {
       '@type': 'Organization',
       name: config.company.name,
       url: config.seo.canonicalUrl || 'https://attatech.dev',
-      logo: `${config.seo.canonicalUrl || 'https://attatech.dev'}/images/attatech-logo.png`,
+      logo: `${config.seo.canonicalUrl || 'https://attatech.dev'}/images/logo-at.png`,
       sameAs: [
         config.social.linkedin,
         config.social.github,

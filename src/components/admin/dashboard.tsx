@@ -216,7 +216,7 @@ export function Dashboard({
       >
         <div className="p-4 flex items-center justify-between border-b border-black/5 dark:border-white/10">
           <div className={cn('flex items-center gap-2', (!sidebarOpen && !mobileSidebarOpen) && 'lg:hidden')}>
-            <img src="/images/attatech-logo.png" alt="" className="w-7 h-7 object-contain" />
+            <img src="/images/logo-at.png" alt="" className="w-7 h-7 object-contain" />
             <span className="font-bold text-sm text-[#0a0e27] dark:text-white">AttaTech</span>
           </div>
           <button

@@ -26,7 +26,7 @@ export function Footer({ config }: FooterProps) {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <img
-                src="/images/attatech-logo.png"
+                src="/images/logo-at.png"
                 alt="AttaTech"
                 className="h-10 w-10 object-contain"
               />

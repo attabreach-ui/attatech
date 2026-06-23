@@ -105,7 +105,7 @@ export function AdminHeader({
               onClick={() => navigate('/')}
               className="flex items-center gap-2 shrink-0 text-sm font-semibold text-[#0a0e27] dark:text-white hover:opacity-80 transition-opacity"
             >
-              <img src="/images/attatech-logo.png" alt="" className="w-6 h-6 object-contain" />
+              <img src="/images/logo-at.png" alt="" className="w-6 h-6 object-contain" />
               <span className="hidden sm:inline">AttaTech</span>
             </button>
             {breadcrumbs.map((crumb, i) => (

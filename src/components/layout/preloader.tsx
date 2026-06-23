@@ -37,7 +37,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
       <div className="flex flex-col items-center gap-8">
         <div className="relative">
           <img
-            src="/images/attatech-logo.png"
+            src="/images/logo-at.png"
             alt="AttaTech"
             className="w-24 h-24 object-contain animate-pulse"
           />

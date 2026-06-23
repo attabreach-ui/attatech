@@ -34,7 +34,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
             <img
-              src="/images/attatech-logo.png"
+              src="/images/logo-at.png"
               alt="AttaTech"
               className="w-16 h-16 object-contain mx-auto mb-4"
             />

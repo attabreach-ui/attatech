@@ -64,7 +64,7 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 shrink-0">
             <img
-              src="/images/attatech-logo.png"
+              src="/images/logo-at.png"
               alt="AttaTech"
               className="h-10 w-10 object-contain"
             />
