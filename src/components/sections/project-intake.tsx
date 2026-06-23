@@ -47,7 +47,7 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
   const handleSubmit = async () => {
     const endpoint = (config.formspreeEndpoint && !config.formspreeEndpoint.includes('YOUR_FORM_ID'))
       ? config.formspreeEndpoint
-      : 'https://formspree.io/f/3029884441783696847';
+      : 'https://formspree.io/f/mqevkoao';
     setSubmitting(true);
     try {
       const res = await fetch(endpoint, {

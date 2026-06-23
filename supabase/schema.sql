@@ -170,7 +170,7 @@ values (
   '{"whatsapp":"https://wa.me/923478481093","linkedin":"","github":"","twitter":""}',
   '{"title":"AttaTech — AI-Powered Business Solutions | Custom Software Pakistan","description":"Custom warehouse systems, inventory, HR and business software built with AI-assisted development. Based in Peshawar, Pakistan. First project: Pakfrost WMS.","keywords":"warehouse management system Pakistan, custom business software, WMS Peshawar, inventory system, HR software Pakistan, AI business solutions, cold storage management, Atta Ullah developer"}',
   '{"headline":"AI-Powered Business Software Built for Real Operations","subheadline":"Custom WMS, Inventory, HR & business software. Built for every business — from startups to enterprises.","ctaPrimary":{"text":"View Live Project","link":"https://pakfrost.netlify.app"},"ctaSecondary":{"text":"Chat on WhatsApp","link":"https://wa.me/923478481093"},"trustBar":["Enterprise WMS Delivered","Next.js Specialist","Long-Term Partnership"]}',
-  'https://formspree.io/f/3029884441783696847'
+  'https://formspree.io/f/mqevkoao'
 )
 on conflict (id) do nothing;
 

@@ -196,5 +196,5 @@ export const defaultConfig: SiteConfig = {
       },
     ],
   },
-  formspreeEndpoint: 'https://formspree.io/f/3029884441783696847',
+  formspreeEndpoint: 'https://formspree.io/f/mqevkoao',
 };

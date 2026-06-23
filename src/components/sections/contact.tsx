@@ -36,7 +36,7 @@ export function Contact({ config }: ContactProps) {
     try {
       const endpoint = (config.formspreeEndpoint && !config.formspreeEndpoint.includes('YOUR_FORM_ID'))
         ? config.formspreeEndpoint
-        : 'https://formspree.io/f/3029884441783696847';
+        : 'https://formspree.io/f/mqevkoao';
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
