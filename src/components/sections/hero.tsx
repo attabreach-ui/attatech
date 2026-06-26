@@ -28,7 +28,7 @@ export function Hero({ config }: HeroProps) {
     setTilt({ x: 0, y: 0 });
   };
 
-  const headlineWords = config.hero.headline.split(' ');
+  const headlineWords = (config.hero?.headline || '').split(' ');
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-[#0a0e27] dark:to-[#0d1225]">

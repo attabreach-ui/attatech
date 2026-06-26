@@ -98,10 +98,10 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
       if (error) throw error;
 
       setFormData({ name: '', role: '', company: '', rating: 5, text: '' });
-      toast.success('Shukriya! Aapka review approval ke liye bhej diya gaya. ✅');
+      toast.success('Thank you! Your review has been submitted for approval. ✅');
     } catch (err) {
       console.error('Error submitting review:', err);
-      toast.error('Review submit nahi ho saka. Dobara try karein.');
+      toast.error('Could not submit review. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -151,7 +151,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center h-full min-h-[250px] text-center">
                   <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-3" />
-                  <p className="text-muted-foreground text-sm">Reviews load ho rahe hain...</p>
+                  <p className="text-muted-foreground text-sm">Loading reviews...</p>
                 </div>
               ) : approved.length > 0 ? (
                 <>
@@ -209,7 +209,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
               ) : (
                 <div className="flex flex-col items-center justify-center h-full min-h-[250px] text-center">
                   <Quote className="w-12 h-12 text-blue-500/30 mb-4" />
-                  <p className="text-muted-foreground">Abhi koi review nahi. Pehle review dene wale banein!</p>
+                  <p className="text-muted-foreground">No reviews yet. Be the first to leave a review!</p>
                 </div>
               )}
             </div>
@@ -219,18 +219,18 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
           <ScrollReveal delay={0.2}>
             <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-8">
               <h3 className="text-xl font-semibold text-[#0a0e27] dark:text-white mb-6">
-                Review Likhein
+                Write a Review
               </h3>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Naam *</label>
+                    <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Name *</label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="Aapka naam"
+                      placeholder="Your name"
                       required
                       disabled={isSubmitting}
                     />
@@ -252,13 +252,13 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                   {renderStars(formData.rating, true, (r) => setFormData({ ...formData, rating: r }))}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Aapka Review *</label>
+                  <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Your Review *</label>
                   <textarea
                     value={formData.text}
                     onChange={(e) => setFormData({ ...formData, text: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     rows={4}
-                    placeholder="Apna tajurba share karein..."
+                    placeholder="Share your experience..."
                     required
                     disabled={isSubmitting}
                   />
@@ -271,12 +271,12 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Bhej raha hoon...
+                      Sending...
                     </>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Review Bhejein
+                      Submit Review
                     </>
                   )}
                 </button>

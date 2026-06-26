@@ -132,9 +132,9 @@ export function Footer({ config }: FooterProps) {
           <div className="flex items-center gap-4 text-sm text-white/40">
             <Link to="/admin" className="hover:text-blue-400 transition-colors">Admin</Link>
             <span className="text-white/20">|</span>
-            <a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a>
+            <span className="hover:text-blue-400 transition-colors cursor-default">Privacy Policy</span>
             <span className="text-white/20">|</span>
-            <a href="#" className="hover:text-blue-400 transition-colors">Terms</a>
+            <span className="hover:text-blue-400 transition-colors cursor-default">Terms</span>
           </div>
         </div>
       </div>

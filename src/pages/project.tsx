@@ -13,8 +13,8 @@ interface ProjectPageProps {
 
 export function ProjectPage({ config }: ProjectPageProps) {
   const { slug } = useParams<{ slug: string }>();
-  const project = config.projects.find((p) =>
-    p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === slug
+  const project = (config.projects || []).find((p) =>
+    (p.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') === slug
   );
   const [lightboxImage, setLightboxImage] = useState<number | null>(null);
 

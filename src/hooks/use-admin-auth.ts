@@ -7,18 +7,29 @@ export function useAdminAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check existing session on mount
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    let cancelled = false;
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        if (cancelled) return;
+        setUser(data?.session?.user ?? null);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error('Auth session error:', err);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    // Listen for auth changes (login / logout / token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = useCallback(async (email: string, password: string): Promise<string | null> => {

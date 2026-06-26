@@ -9,7 +9,7 @@ interface NewsletterProps {
 }
 
 export function Newsletter({ config }: NewsletterProps) {
-  if (!config.newsletter.enabled) return null;
+  if (!config.newsletter?.enabled) return null;
 
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);

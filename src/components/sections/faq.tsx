@@ -33,7 +33,7 @@ export function FAQ({ config }: FAQProps) {
         </div>
 
         <div className="space-y-4">
-          {config.faqs.map((faq, i) => (
+          {(config.faqs || []).map((faq, i) => (
             <ScrollReveal key={faq.id} delay={i * 0.05}>
               <div className="bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl overflow-hidden">
                 <button

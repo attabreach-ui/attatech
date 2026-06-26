@@ -8,7 +8,7 @@ interface ClientLogosProps {
 }
 
 export function ClientLogos({ config }: ClientLogosProps) {
-  if (config.clientLogos.length === 0) return null;
+  if ((config.clientLogos || []).length === 0) return null;
 
   return (
     <section className="py-16 md:py-20 bg-slate-50 dark:bg-[#080c20] relative">

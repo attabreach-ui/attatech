@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { defaultConfig } from '@/data/site-config';
 import type {
@@ -95,7 +95,11 @@ export function useSiteConfig() {
   const [loading, setLoading] = useState(true);
   const [dbAvailable, setDbAvailable] = useState(false);
 
+  const fetchVersionRef = useRef(0);
+  const savingLockRef = useRef(false);
+
   const fetchAll = useCallback(async () => {
+    const currentVersion = ++fetchVersionRef.current;
     try {
       setLoading(true);
       const [settingsRes, statsRes, servicesRes, projectsRes, faqsRes, reviewsRes] =
@@ -108,7 +112,8 @@ export function useSiteConfig() {
           supabase.from('reviews').select('*').eq('approved', true).order('created_at', { ascending: false }),
         ]);
 
-      // If settings row doesn't exist, DB hasn't been seeded yet — use defaults
+      if (fetchVersionRef.current !== currentVersion) return;
+
       if (settingsRes.error || !settingsRes.data) {
         setDbAvailable(false);
         return;
@@ -125,10 +130,11 @@ export function useSiteConfig() {
         testimonials: reviewsRes.data ? mapReviews(reviewsRes.data as unknown as Record<string, unknown>[]) : prev.testimonials,
       }));
     } catch {
-      // Supabase not reachable / env vars missing — silently use defaults
       setDbAvailable(false);
     } finally {
-      setLoading(false);
+      if (fetchVersionRef.current === currentVersion) {
+        setLoading(false);
+      }
     }
   }, []);
 
@@ -138,85 +144,105 @@ export function useSiteConfig() {
 
   // ── Admin write helpers ──────────────────────────────────────────────────
 
-  const saveSettings = useCallback(async (partial: Partial<SiteConfig>): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      company: partial.company,
-      founder: partial.founder,
-      contact: partial.contact,
-      social: partial.social,
-      seo: partial.seo,
-      hero: partial.hero,
-      pricing: partial.pricing,
-      blog_posts: partial.blogPosts,
-      why_choose_us: partial.whyChooseUs,
-      client_logos: partial.clientLogos,
-      analytics: partial.analytics,
-      newsletter: partial.newsletter,
-      intake: partial.intake,
-      formspree_endpoint: partial.formspreeEndpoint,
-      updated_at: new Date().toISOString(),
-    });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, ...partial }));
-    return null;
+  const withSaveLock = useCallback(async <T extends unknown>(fn: () => Promise<T>): Promise<T | 'Save in progress, please wait'> => {
+    if (savingLockRef.current) return 'Save in progress, please wait' as unknown as T;
+    savingLockRef.current = true;
+    try {
+      return await fn();
+    } finally {
+      savingLockRef.current = false;
+    }
   }, []);
+
+  const saveSettings = useCallback(async (partial: Partial<SiteConfig>): Promise<string | null> => {
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').upsert({
+        id: 1,
+        company: partial.company,
+        founder: partial.founder,
+        contact: partial.contact,
+        social: partial.social,
+        seo: partial.seo,
+        hero: partial.hero,
+        pricing: partial.pricing,
+        blog_posts: partial.blogPosts,
+        why_choose_us: partial.whyChooseUs,
+        client_logos: partial.clientLogos,
+        analytics: partial.analytics,
+        newsletter: partial.newsletter,
+        intake: partial.intake,
+        formspree_endpoint: partial.formspreeEndpoint,
+        updated_at: new Date().toISOString(),
+      });
+      if (error) return error.message;
+      setConfig((prev) => ({ ...prev, ...partial }));
+      return null;
+    });
+  }, [withSaveLock]);
 
   const saveStats = useCallback(async (stats: Stat[]): Promise<string | null> => {
-    const { error: delErr } = await supabase.from('stats').delete().neq('id', '__none__');
-    if (delErr) return delErr.message;
-    const rows = stats.map((s, i) => ({ ...s, sort_order: i }));
-    const { error } = await supabase.from('stats').insert(rows);
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, stats }));
-    return null;
-  }, []);
+    return withSaveLock(async () => {
+      const { error: delErr } = await supabase.from('stats').delete().neq('id', '__none__');
+      if (delErr) return delErr.message;
+      const rows = stats.map((s, i) => ({ ...s, sort_order: i }));
+      const { error } = await supabase.from('stats').insert(rows);
+      if (error) return error.message;
+      setConfig((prev) => ({ ...prev, stats }));
+      return null;
+    });
+  }, [withSaveLock]);
 
   const saveServices = useCallback(async (services: Service[]): Promise<string | null> => {
-    const { error: delErr } = await supabase.from('services').delete().neq('id', '__none__');
-    if (delErr) return delErr.message;
-    const rows = services.map((s, i) => ({ ...s, sort_order: i }));
-    const { error } = await supabase.from('services').insert(rows);
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, services }));
-    return null;
-  }, []);
+    return withSaveLock(async () => {
+      const { error: delErr } = await supabase.from('services').delete().neq('id', '__none__');
+      if (delErr) return delErr.message;
+      const rows = services.map((s, i) => ({ ...s, sort_order: i }));
+      const { error } = await supabase.from('services').insert(rows);
+      if (error) return error.message;
+      setConfig((prev) => ({ ...prev, services }));
+      return null;
+    });
+  }, [withSaveLock]);
 
   const saveProjects = useCallback(async (projects: Project[]): Promise<string | null> => {
-    const { error: delErr } = await supabase.from('projects').delete().neq('id', '__none__');
-    if (delErr) return delErr.message;
-    const rows = projects.map((p, i) => ({
-      id: p.id,
-      title: p.title,
-      client: p.client,
-      industry: p.industry,
-      location: p.location,
-      year: p.year,
-      type: p.type,
-      description: p.description,
-      long_description: p.longDescription,
-      features: p.features,
-      results: p.results,
-      tech_stack: p.techStack,
-      live_url: p.liveUrl,
-      screenshots: p.screenshots,
-      sort_order: i,
-    }));
-    const { error } = await supabase.from('projects').insert(rows);
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, projects }));
-    return null;
-  }, []);
+    return withSaveLock(async () => {
+      const { error: delErr } = await supabase.from('projects').delete().neq('id', '__none__');
+      if (delErr) return delErr.message;
+      const rows = projects.map((p, i) => ({
+        id: p.id,
+        title: p.title,
+        client: p.client,
+        industry: p.industry,
+        location: p.location,
+        year: p.year,
+        type: p.type,
+        description: p.description,
+        long_description: p.longDescription,
+        features: p.features,
+        results: p.results,
+        tech_stack: p.techStack,
+        live_url: p.liveUrl,
+        screenshots: p.screenshots,
+        sort_order: i,
+      }));
+      const { error } = await supabase.from('projects').insert(rows);
+      if (error) return error.message;
+      setConfig((prev) => ({ ...prev, projects }));
+      return null;
+    });
+  }, [withSaveLock]);
 
   const saveFaqs = useCallback(async (faqs: FAQ[]): Promise<string | null> => {
-    const { error: delErr } = await supabase.from('faqs').delete().neq('id', '__none__');
-    if (delErr) return delErr.message;
-    const rows = faqs.map((f, i) => ({ ...f, sort_order: i }));
-    const { error } = await supabase.from('faqs').insert(rows);
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, faqs }));
-    return null;
-  }, []);
+    return withSaveLock(async () => {
+      const { error: delErr } = await supabase.from('faqs').delete().neq('id', '__none__');
+      if (delErr) return delErr.message;
+      const rows = faqs.map((f, i) => ({ ...f, sort_order: i }));
+      const { error } = await supabase.from('faqs').insert(rows);
+      if (error) return error.message;
+      setConfig((prev) => ({ ...prev, faqs }));
+      return null;
+    });
+  }, [withSaveLock]);
 
   const savePricing = useCallback(async (pricing: PricingTier[]): Promise<string | null> => {
     const { error } = await supabase.from('site_settings').upsert({

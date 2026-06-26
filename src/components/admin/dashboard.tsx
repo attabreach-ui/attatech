@@ -1372,7 +1372,7 @@ function TestimonialsEditor() {
       const { data, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
       if (error) throw error;
       if (data) setDbReviews(data.map((row) => ({ db_id: row.id, id: row.id, name: row.name, role: row.role || '', company: row.company || '', rating: row.stars, text: row.review_text, approved: row.approved, date: row.created_at })));
-    } catch { toast.error('Reviews load nahi ho sake'); } finally { setIsLoading(false); }
+    } catch { toast.error('Could not load reviews'); } finally { setIsLoading(false); }
   };
 
   const toggleApproval = async (dbId: string, currentApproved: boolean) => {
@@ -1382,7 +1382,7 @@ function TestimonialsEditor() {
       if (error) throw error;
       setDbReviews((prev) => prev.map((r) => (r.db_id === dbId ? { ...r, approved: !currentApproved } : r)));
       toast.success(!currentApproved ? 'Review approved!' : 'Review hidden');
-    } catch { toast.error('Action fail ho gaya'); } finally { setActionLoading(null); }
+    } catch { toast.error('Action failed'); } finally { setActionLoading(null); }
   };
 
   const deleteReview = async (dbId: string) => {
@@ -1393,7 +1393,7 @@ function TestimonialsEditor() {
       if (error) throw error;
       setDbReviews((prev) => prev.filter((r) => r.db_id !== dbId));
       toast.success('Review deleted');
-    } catch { toast.error('Delete fail ho gaya'); } finally { setActionLoading(null); }
+    } catch { toast.error('Delete failed'); } finally { setActionLoading(null); }
   };
 
   const pendingCount = dbReviews.filter((r) => !r.approved).length;

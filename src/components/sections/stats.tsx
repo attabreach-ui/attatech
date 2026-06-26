@@ -19,7 +19,7 @@ export function Stats({ config }: StatsProps) {
     <section className="py-16 md:py-20 bg-white dark:bg-[#0a0e27] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {config.stats.map((stat, i) => {
+          {(config.stats || []).map((stat, i) => {
             const Icon = iconMap[stat.icon] || Briefcase;
             const isNumeric = !isNaN(Number(stat.value));
 

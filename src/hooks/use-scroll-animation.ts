@@ -33,9 +33,11 @@ export function useCountUp(end: number, duration = 2000, startOnView = true) {
       setStarted(true);
       return;
     }
+    const startedRef = { current: false };
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !started) {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
           setStarted(true);
           observer.unobserve(entry.target);
         }
@@ -45,7 +47,7 @@ export function useCountUp(end: number, duration = 2000, startOnView = true) {
     const el = ref.current;
     if (el) observer.observe(el);
     return () => { if (el) observer.unobserve(el); };
-  }, [startOnView, started]);
+  }, [startOnView]);
 
   useEffect(() => {
     if (!started) return;

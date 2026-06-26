@@ -12,7 +12,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export function WhyChooseUs({ config }: WhyChooseUsProps) {
-  if (config.whyChooseUs.length === 0) return null;
+  if ((config.whyChooseUs || []).length === 0) return null;
 
   return (
     <section className="py-20 md:py-28 bg-white dark:bg-[#0a0e27] relative">

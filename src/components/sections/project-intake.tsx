@@ -10,15 +10,15 @@ interface ProjectIntakeProps {
 }
 
 export function ProjectIntake({ config }: ProjectIntakeProps) {
-  if (!config.intake.enabled) return null;
+  if (!config.intake?.enabled) return null;
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const step = config.intake.steps[currentStep];
-  const isLastStep = currentStep === config.intake.steps.length - 1;
+  const step = (config.intake?.steps || [])[currentStep];
+  const isLastStep = currentStep === ((config.intake?.steps || []).length - 1);
 
   const handleFieldChange = (fieldId: string, value: string) => {
     setFormData((prev) => ({ ...prev, [fieldId]: value }));

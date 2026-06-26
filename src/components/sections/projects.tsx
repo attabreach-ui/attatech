@@ -17,8 +17,8 @@ export function Projects({ config }: ProjectsProps) {
   const [lightboxImage, setLightboxImage] = useState<number | null>(null);
 
   const filtered = activeFilter === 'All'
-    ? config.projects
-    : config.projects.filter((p) => p.type === activeFilter);
+    ? (config.projects || []).filter(Boolean)
+    : (config.projects || []).filter(Boolean).filter((p) => p.type === activeFilter);
 
   const openLightbox = (index: number) => setLightboxImage(index);
   const closeLightbox = () => setLightboxImage(null);

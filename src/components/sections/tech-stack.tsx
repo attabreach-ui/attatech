@@ -82,7 +82,7 @@ export function TechStack({ config }: TechStackProps) {
         </div>
 
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-6">
-          {config.techStack.map((tech, i) => {
+          {(config.techStack || []).map((tech, i) => {
             const Icon = iconComponents[tech.icon] || Globe;
             return (
               <ScrollReveal key={tech.id} delay={i * 0.08}>

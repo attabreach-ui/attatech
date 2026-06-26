@@ -93,7 +93,7 @@ export function SEOHead({ config, pathname }: SEOHeadProps) {
         '@type': 'ContactPoint',
         telephone: config.contact.phone,
         contactType: 'customer service',
-        availableLanguage: ['English', 'Urdu'],
+        availableLanguage: ['English'],
       },
       founder: {
         '@type': 'Person',

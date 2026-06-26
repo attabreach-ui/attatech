@@ -9,7 +9,7 @@ interface BlogPostPageProps {
 
 export function BlogPostPage({ config }: BlogPostPageProps) {
   const { slug } = useParams<{ slug: string }>();
-  const post = config.blogPosts.find((p) => p.slug === slug && p.published);
+  const post = (config.blogPosts || []).find((p) => p.slug === slug && p.published);
 
   if (!post) {
     return (

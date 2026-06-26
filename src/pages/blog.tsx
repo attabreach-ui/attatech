@@ -9,7 +9,7 @@ interface BlogPageProps {
 }
 
 export function BlogPage({ config }: BlogPageProps) {
-  const publishedPosts = config.blogPosts.filter((p) => p.published);
+  const publishedPosts = (config.blogPosts || []).filter((p) => p.published);
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0e27]">
