@@ -174,6 +174,8 @@ export interface SiteConfig {
     ctaPrimary: { text: string; link: string };
     ctaSecondary: { text: string; link: string };
     trustBar: string[];
+    heroImage?: string;
+    heroBadge?: { label: string; status: string };
   };
   stats: Stat[];
   services: Service[];

@@ -21,6 +21,7 @@ import {
 } from 'recharts';
 import { AdminHeader, type Notification } from './admin-header';
 import type { User } from '@supabase/supabase-js';
+import { defaultConfig } from '@/data/site-config';
 
 interface DashboardProps {
   config: SiteConfig;
@@ -506,7 +507,13 @@ function formatTimeAgo(date: Date): string {
 
 // ─── Settings Editor ────────────────────────────────────────────────────────
 function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSaveSettings: (partial: Partial<SiteConfig>) => Promise<string | null> }) {
-  const [form, setForm] = useState({ ...config });
+  const [form, setForm] = useState(() => ({
+    ...config,
+    hero: {
+      ...defaultConfig.hero,
+      ...config.hero,
+    },
+  }));
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
@@ -597,6 +604,9 @@ function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSave
             <Field label="CTA Secondary Text" value={form.hero.ctaSecondary.text} onChange={(v) => setForm({ ...form, hero: { ...form.hero, ctaSecondary: { ...form.hero.ctaSecondary, text: v } } })} />
             <Field label="CTA Secondary Link" value={form.hero.ctaSecondary.link} onChange={(v) => setForm({ ...form, hero: { ...form.hero, ctaSecondary: { ...form.hero.ctaSecondary, link: v } } })} />
             <Field label="Trust Bar (comma-separated)" value={form.hero.trustBar.join(', ')} onChange={(v) => setForm({ ...form, hero: { ...form.hero, trustBar: v.split(',').map((s) => s.trim()).filter(Boolean) } })} />
+            <Field label="Hero Image URL (leave empty for abstract visual)" value={form.hero.heroImage || ''} onChange={(v) => setForm({ ...form, hero: { ...form.hero, heroImage: v } })} />
+            <Field label="Hero Badge Label" value={form.hero.heroBadge?.label || ''} onChange={(v) => setForm({ ...form, hero: { ...form.hero, heroBadge: { label: v, status: form.hero.heroBadge?.status || '' } } })} />
+            <Field label="Hero Badge Status" value={form.hero.heroBadge?.status || ''} onChange={(v) => setForm({ ...form, hero: { ...form.hero, heroBadge: { label: form.hero.heroBadge?.label || '', status: v } } })} />
           </div>
         </Section>
 

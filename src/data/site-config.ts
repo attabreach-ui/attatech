@@ -46,6 +46,8 @@ export const defaultConfig: SiteConfig = {
     ctaPrimary: { text: 'View Live Project', link: 'https://pakfrost.netlify.app' },
     ctaSecondary: { text: 'Chat on WhatsApp', link: 'https://wa.me/923478481093' },
     trustBar: ['Enterprise WMS Delivered', 'Next.js Specialist', 'Long-Term Partnership'],
+    heroImage: '',
+    heroBadge: { label: 'System Status', status: 'Live & Operational' },
   },
   stats: [
     { id: '1', label: 'Projects Delivered', value: '1', suffix: '', icon: 'Briefcase' },

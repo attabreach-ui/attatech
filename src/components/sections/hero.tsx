@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { SiteConfig } from '@/types';
 import { MeshGradient } from '@/components/custom/mesh-gradient';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
-import { Check, ArrowRight, MessageCircle } from 'lucide-react';
+import { Check, ArrowRight, MessageCircle, Code2, Layers, Zap, Shield, Database } from 'lucide-react';
 
 interface HeroProps {
   config: SiteConfig;
@@ -29,6 +29,7 @@ export function Hero({ config }: HeroProps) {
   };
 
   const headlineWords = (config.hero?.headline || '').split(' ');
+  const hasHeroImage = !!(config.hero?.heroImage || '').trim();
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-[#0a0e27] dark:to-[#0d1225]">
@@ -42,7 +43,7 @@ export function Hero({ config }: HeroProps) {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/20 rounded-full text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                {config.company.tagline}
+                {config.company?.tagline || 'AI-Powered Solutions'}
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[#0a0e27] dark:text-white">
@@ -70,36 +71,36 @@ export function Hero({ config }: HeroProps) {
 
             <ScrollReveal delay={0.4}>
               <p className="text-lg text-[#0a0e27]/70 dark:text-white/70 max-w-xl leading-relaxed">
-                {config.hero.subheadline}
+                {config.hero?.subheadline || ''}
               </p>
             </ScrollReveal>
 
             <ScrollReveal delay={0.5}>
               <div className="flex flex-wrap gap-4">
                 <a
-                  href={config.hero.ctaPrimary.link}
+                  href={config.hero?.ctaPrimary?.link || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
                 >
-                  {config.hero.ctaPrimary.text}
+                  {config.hero?.ctaPrimary?.text || 'Get Started'}
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <a
-                  href={config.hero.ctaSecondary.link}
+                  href={config.hero?.ctaSecondary?.link || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-[#25d366] hover:bg-[#20bd5a] text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:-translate-y-0.5"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  {config.hero.ctaSecondary.text}
+                  {config.hero?.ctaSecondary?.text || 'Contact Us'}
                 </a>
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={0.6}>
               <div className="flex flex-wrap items-center gap-4 pt-4">
-                {config.hero.trustBar.map((item, i) => (
+                {(config.hero?.trustBar || []).map((item, i) => (
                   <div key={i} className="flex items-center gap-1.5 text-sm text-[#0a0e27]/60 dark:text-white/60">
                     <Check className="w-4 h-4 text-blue-500" />
                     {item}
@@ -109,7 +110,7 @@ export function Hero({ config }: HeroProps) {
             </ScrollReveal>
           </div>
 
-          {/* Right: Dashboard Screenshot with 3D Tilt */}
+          {/* Right: Hero Visual */}
           <ScrollReveal delay={0.3} direction="left">
             <div
               className="relative perspective-[1000px]"
@@ -127,31 +128,124 @@ export function Hero({ config }: HeroProps) {
                   transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
                 }}
               >
-                <img
-                  src="/images/projects/pakfrost/pakfrost-dashboard.jpg"
-                  alt="Pakfrost WMS Dashboard"
-                  className="w-full h-auto"
-                />
+                {hasHeroImage ? (
+                  <img
+                    src={config.hero?.heroImage}
+                    alt="AttaTech Software"
+                    className="w-full h-auto"
+                  />
+                ) : (
+                  <GenericHeroVisual />
+                )}
                 {/* Overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               </div>
 
               {/* Stats badge */}
-              <div className="absolute -bottom-4 -left-4 bg-white dark:bg-[#131a35] rounded-xl shadow-lg border border-black/5 dark:border-white/10 px-4 py-3 hidden lg:block">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">System Status</p>
-                    <p className="text-sm font-semibold">Live & Operational</p>
+              {config.hero?.heroBadge && (
+                <div className="absolute -bottom-4 -left-4 bg-white dark:bg-[#131a35] rounded-xl shadow-lg border border-black/5 dark:border-white/10 px-4 py-3 hidden lg:block">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">{config.hero.heroBadge.label}</p>
+                      <p className="text-sm font-semibold">{config.hero.heroBadge.status}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </ScrollReveal>
         </div>
       </div>
     </section>
+  );
+}
+
+/** Generic professional CSS-only hero visual — no project-specific imagery */
+function GenericHeroVisual() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] overflow-hidden">
+      {/* Grid pattern */}
+      <div className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `linear-gradient(rgba(59,130,246,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.3) 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* Floating code blocks */}
+      <div className={`absolute top-[15%] left-[8%] w-[55%] transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-blue-500/20 p-3 shadow-lg">
+          <div className="flex items-center gap-1.5 mb-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+            <span className="ml-2 text-[10px] text-slate-400 font-mono">app.tsx</span>
+          </div>
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-[80%] bg-blue-500/30 rounded" />
+            <div className="h-1.5 w-[60%] bg-indigo-500/30 rounded" />
+            <div className="h-1.5 w-[70%] bg-purple-500/30 rounded" />
+            <div className="h-1.5 w-[40%] bg-blue-500/20 rounded" />
+          </div>
+        </div>
+      </div>
+
+      <div className={`absolute top-[42%] right-[5%] w-[45%] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-indigo-500/20 p-3 shadow-lg">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Database className="w-3 h-3 text-indigo-400" />
+            <span className="text-[10px] text-slate-400 font-mono">schema.sql</span>
+          </div>
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-[65%] bg-indigo-500/30 rounded" />
+            <div className="h-1.5 w-[50%] bg-blue-500/20 rounded" />
+            <div className="h-1.5 w-[75%] bg-purple-500/20 rounded" />
+          </div>
+        </div>
+      </div>
+
+      <div className={`absolute bottom-[12%] left-[15%] w-[40%] transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-purple-500/20 p-3 shadow-lg">
+          <div className="flex items-center gap-1.5 mb-2">
+            <Shield className="w-3 h-3 text-green-400" />
+            <span className="text-[10px] text-slate-400 font-mono">security.config</span>
+          </div>
+          <div className="space-y-1.5">
+            <div className="h-1.5 w-[55%] bg-green-500/30 rounded" />
+            <div className="h-1.5 w-[70%] bg-emerald-500/20 rounded" />
+          </div>
+        </div>
+      </div>
+
+      {/* Floating icons */}
+      <div className="absolute top-[8%] right-[20%] animate-float-slow">
+        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/20">
+          <Code2 className="w-5 h-5 text-blue-400" />
+        </div>
+      </div>
+      <div className="absolute bottom-[25%] right-[12%] animate-float animation-delay-300">
+        <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center border border-indigo-500/20">
+          <Layers className="w-5 h-5 text-indigo-400" />
+        </div>
+      </div>
+      <div className="absolute top-[55%] left-[5%] animate-float animation-delay-500">
+        <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center border border-purple-500/20">
+          <Zap className="w-5 h-5 text-purple-400" />
+        </div>
+      </div>
+
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-indigo-500/10 rounded-full blur-3xl" />
+    </div>
   );
 }
