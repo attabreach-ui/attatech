@@ -10,22 +10,23 @@ import type {
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
-  return {
-    company: row.company as SiteConfig['company'],
-    founder: row.founder as SiteConfig['founder'],
-    contact: row.contact as SiteConfig['contact'],
-    social: row.social as SiteConfig['social'],
-    seo: row.seo as SiteConfig['seo'],
-    hero: row.hero as SiteConfig['hero'],
-    pricing: row.pricing as SiteConfig['pricing'] ?? defaultConfig.pricing,
-    blogPosts: row.blog_posts as SiteConfig['blogPosts'] ?? defaultConfig.blogPosts,
-    whyChooseUs: row.why_choose_us as SiteConfig['whyChooseUs'] ?? defaultConfig.whyChooseUs,
-    clientLogos: row.client_logos as SiteConfig['clientLogos'] ?? defaultConfig.clientLogos,
-    analytics: row.analytics as SiteConfig['analytics'] ?? defaultConfig.analytics,
-    newsletter: row.newsletter as SiteConfig['newsletter'] ?? defaultConfig.newsletter,
-    intake: row.intake as SiteConfig['intake'] ?? defaultConfig.intake,
-    formspreeEndpoint: ((row.formspree_endpoint as string) || '').includes('YOUR_FORM_ID') ? defaultConfig.formspreeEndpoint : ((row.formspree_endpoint as string) || defaultConfig.formspreeEndpoint),
-  };
+  const result: Partial<SiteConfig> = {};
+  if (row.company != null) result.company = row.company as SiteConfig['company'];
+  if (row.founder != null) result.founder = row.founder as SiteConfig['founder'];
+  if (row.contact != null) result.contact = row.contact as SiteConfig['contact'];
+  if (row.social != null) result.social = row.social as SiteConfig['social'];
+  if (row.seo != null) result.seo = row.seo as SiteConfig['seo'];
+  if (row.hero != null) result.hero = row.hero as SiteConfig['hero'];
+  if (row.pricing != null) result.pricing = row.pricing as SiteConfig['pricing'];
+  if (row.blog_posts != null) result.blogPosts = row.blog_posts as SiteConfig['blogPosts'];
+  if (row.why_choose_us != null) result.whyChooseUs = row.why_choose_us as SiteConfig['whyChooseUs'];
+  if (row.client_logos != null) result.clientLogos = row.client_logos as SiteConfig['clientLogos'];
+  if (row.analytics != null) result.analytics = row.analytics as SiteConfig['analytics'];
+  if (row.newsletter != null) result.newsletter = row.newsletter as SiteConfig['newsletter'];
+  if (row.intake != null) result.intake = row.intake as SiteConfig['intake'];
+  const fse = (row.formspree_endpoint as string) || '';
+  result.formspreeEndpoint = fse.includes('YOUR_FORM_ID') ? defaultConfig.formspreeEndpoint : (fse || defaultConfig.formspreeEndpoint);
+  return result;
 }
 
 function mapStats(rows: Record<string, unknown>[]): Stat[] {
@@ -156,7 +157,8 @@ export function useSiteConfig() {
 
   const saveSettings = useCallback(async (partial: Partial<SiteConfig>): Promise<string | null> => {
     return withSaveLock(async () => {
-      const { error } = await supabase.from('site_settings').upsert({
+      // Save base fields that always exist in the database
+      const baseFields = {
         id: 1,
         company: partial.company,
         founder: partial.founder,
@@ -164,17 +166,29 @@ export function useSiteConfig() {
         social: partial.social,
         seo: partial.seo,
         hero: partial.hero,
-        pricing: partial.pricing,
-        blog_posts: partial.blogPosts,
-        why_choose_us: partial.whyChooseUs,
-        client_logos: partial.clientLogos,
-        analytics: partial.analytics,
-        newsletter: partial.newsletter,
-        intake: partial.intake,
-        formspree_endpoint: partial.formspreeEndpoint,
         updated_at: new Date().toISOString(),
-      });
-      if (error) return error.message;
+      };
+      const { error: baseError } = await supabase.from('site_settings').upsert(baseFields);
+      if (baseError) return baseError.message;
+
+      // Try to save new fields separately (columns may not exist in older databases)
+      const newFields: Record<string, unknown> = {};
+      if (partial.pricing !== undefined) newFields.pricing = partial.pricing;
+      if (partial.blogPosts !== undefined) newFields.blog_posts = partial.blogPosts;
+      if (partial.whyChooseUs !== undefined) newFields.why_choose_us = partial.whyChooseUs;
+      if (partial.clientLogos !== undefined) newFields.client_logos = partial.clientLogos;
+      if (partial.analytics !== undefined) newFields.analytics = partial.analytics;
+      if (partial.newsletter !== undefined) newFields.newsletter = partial.newsletter;
+      if (partial.intake !== undefined) newFields.intake = partial.intake;
+      if (partial.formspreeEndpoint !== undefined) newFields.formspree_endpoint = partial.formspreeEndpoint;
+
+      if (Object.keys(newFields).length > 0) {
+        const { error: newError } = await supabase.from('site_settings').update(newFields).eq('id', 1);
+        if (newError && !newError.message?.includes('Could not find')) {
+          return newError.message;
+        }
+      }
+
       setConfig((prev) => ({ ...prev, ...partial }));
       return null;
     });
@@ -245,81 +259,67 @@ export function useSiteConfig() {
   }, [withSaveLock]);
 
   const savePricing = useCallback(async (pricing: PricingTier[]): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      pricing: pricing,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ pricing, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, pricing }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, pricing }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveBlogPosts = useCallback(async (blogPosts: BlogPost[]): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      blog_posts: blogPosts,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ blog_posts: blogPosts, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, blogPosts }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, blogPosts }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveWhyChooseUs = useCallback(async (items: WhyChooseItem[]): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      why_choose_us: items,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ why_choose_us: items, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, whyChooseUs: items }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, whyChooseUs: items }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveClientLogos = useCallback(async (logos: ClientLogo[]): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      client_logos: logos,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ client_logos: logos, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, clientLogos: logos }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, clientLogos: logos }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveAnalytics = useCallback(async (analytics: AnalyticsConfig): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      analytics: analytics,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ analytics, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, analytics }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, analytics }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveNewsletter = useCallback(async (newsletter: NewsletterConfig): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      newsletter: newsletter,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ newsletter, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, newsletter }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, newsletter }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   const saveIntake = useCallback(async (intake: IntakeConfig): Promise<string | null> => {
-    const { error } = await supabase.from('site_settings').upsert({
-      id: 1,
-      intake: intake,
-      updated_at: new Date().toISOString(),
+    return withSaveLock(async () => {
+      const { error } = await supabase.from('site_settings').update({ intake, updated_at: new Date().toISOString() }).eq('id', 1);
+      if (error && !error.message?.includes('Could not find')) return error.message;
+      setConfig((prev) => ({ ...prev, intake }));
+      return null;
     });
-    if (error) return error.message;
-    setConfig((prev) => ({ ...prev, intake }));
-    return null;
-  }, []);
+  }, [withSaveLock]);
 
   return {
     config,
