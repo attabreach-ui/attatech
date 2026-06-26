@@ -624,12 +624,12 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
 
 // ─── Pricing Editor ────────────────────────────────────────────────────────
 function PricingEditor({ config, onSavePricing, editingPricing, setEditingPricing }: { config: SiteConfig; onSavePricing: (pricing: PricingTier[]) => Promise<string | null>; editingPricing: PricingTier | null; setEditingPricing: (p: PricingTier | null) => void }) {
-  const [pricing, setPricing] = useState<PricingTier[]>(config.pricing);
+  const [pricing, setPricing] = useState<PricingTier[]>(config.pricing || []);
   const [saving, setSaving] = useState(false);
 
   const savePricing = async () => {
     setSaving(true);
-    const err = await onSavePricing(pricing);
+    const err = await onSavePricing(pricing || []);
     if (err) toast.error(err); else toast.success('Pricing saved!');
     setSaving(false);
   };
@@ -752,12 +752,12 @@ function PricingTierForm({ tier, onSave, onCancel }: { tier: PricingTier; onSave
 
 // ─── Blog Editor ───────────────────────────────────────────────────────────
 function BlogEditor({ config, onSaveBlogPosts, editingBlogPost, setEditingBlogPost }: { config: SiteConfig; onSaveBlogPosts: (posts: BlogPost[]) => Promise<string | null>; editingBlogPost: BlogPost | null; setEditingBlogPost: (p: BlogPost | null) => void }) {
-  const [posts, setPosts] = useState<BlogPost[]>(config.blogPosts);
+  const [posts, setPosts] = useState<BlogPost[]>(config.blogPosts || []);
   const [saving, setSaving] = useState(false);
 
   const savePosts = async () => {
     setSaving(true);
-    const err = await onSaveBlogPosts(posts);
+    const err = await onSaveBlogPosts(posts || []);
     if (err) toast.error(err); else toast.success('Blog posts saved!');
     setSaving(false);
   };
@@ -1204,19 +1204,21 @@ function IntakeEditor({ config, onSaveIntake }: { config: SiteConfig; onSaveInta
 // Projects Editor (same as original)
 function ProjectsEditor({ config, onSaveProjects, editingProject, setEditingProject }: { config: SiteConfig; onSaveProjects: (p: Project[]) => Promise<string | null>; editingProject: Project | null; setEditingProject: (p: Project | null) => void }) {
   const saveProject = async (project: Project) => {
-    const exists = config.projects.find((p) => p.id === project.id);
-    const updated = exists ? config.projects.map((p) => (p.id === project.id ? project : p)) : [...config.projects, project];
+    const exists = config.projects?.find((p) => p && p.id === project.id);
+    const updated = exists ? config.projects.map((p) => (p && p.id === project.id ? project : p)) : [...(config.projects || []), project];
     const err = await onSaveProjects(updated);
     if (err) toast.error(err); else { toast.success('Project saved!'); setEditingProject(null); }
   };
 
   const deleteProject = async (id: string) => {
     if (!confirm('Delete this project?')) return;
-    const err = await onSaveProjects(config.projects.filter((p) => p.id !== id));
+    const err = await onSaveProjects((config.projects || []).filter((p) => p && p.id !== id));
     if (err) toast.error(err); else toast.success('Project deleted');
   };
 
   if (editingProject) return <ProjectForm project={editingProject} onSave={saveProject} onCancel={() => setEditingProject(null)} />;
+
+  const projects = (config.projects || []).filter(Boolean);
 
   return (
     <div className="space-y-6">
@@ -1224,7 +1226,7 @@ function ProjectsEditor({ config, onSaveProjects, editingProject, setEditingProj
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Projects</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your portfolio projects</p></div>
         <button onClick={() => setEditingProject({ id: generateId(), title: '', client: '', industry: '', location: '', year: '', type: 'Web Apps', description: '', longDescription: '', features: [], results: [], techStack: [], liveUrl: '', screenshots: [] })} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Project</button>
       </div>
-      {config.projects.length === 0 ? (
+      {projects.length === 0 ? (
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><Rocket className="w-8 h-8 text-blue-500" /></div>
           <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No projects yet</h3>
@@ -1233,11 +1235,11 @@ function ProjectsEditor({ config, onSaveProjects, editingProject, setEditingProj
         </div>
       ) : (
         <div className="space-y-3">
-          {config.projects.map((project) => (
+          {projects.map((project) => (
             <div key={project.id} className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-4 flex items-center justify-between hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                {project.screenshots[0] && <img src={project.screenshots[0].src} alt="" className="w-16 h-12 object-cover rounded-lg" />}
-                <div><h3 className="font-medium text-[#0a0e27] dark:text-white">{project.title}</h3><p className="text-sm text-muted-foreground">{project.client} · {project.type}</p></div>
+                {project.screenshots && project.screenshots[0] && <img src={project.screenshots[0].src} alt="" className="w-16 h-12 object-cover rounded-lg" />}
+                <div><h3 className="font-medium text-[#0a0e27] dark:text-white">{project.title || 'Untitled'}</h3><p className="text-sm text-muted-foreground">{project.client || 'No client'} · {project.type || 'Unknown'}</p></div>
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setEditingProject(project)} className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors"><Edit2 className="w-4 h-4 text-muted-foreground" /></button>
@@ -1253,10 +1255,16 @@ function ProjectsEditor({ config, onSaveProjects, editingProject, setEditingProj
 
 function ProjectForm({ project, onSave, onCancel }: { project: Project; onSave: (p: Project) => void; onCancel: () => void }) {
   const [form, setForm] = useState<Project>({ ...project });
+
+  // Sync form state when project prop changes (e.g., when editing a different project)
+  useEffect(() => {
+    setForm({ ...project });
+  }, [project.id]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form.title ? 'Edit Project' : 'Add Project'}</h2>
+        <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form?.title ? 'Edit Project' : 'Add Project'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
           <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
@@ -1264,19 +1272,19 @@ function ProjectForm({ project, onSave, onCancel }: { project: Project; onSave: 
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Title" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
-          <Field label="Client" value={form.client} onChange={(v) => setForm({ ...form, client: v })} />
-          <Field label="Industry" value={form.industry} onChange={(v) => setForm({ ...form, industry: v })} />
-          <Field label="Location" value={form.location} onChange={(v) => setForm({ ...form, location: v })} />
-          <Field label="Year" value={form.year} onChange={(v) => setForm({ ...form, year: v })} />
-          <Field label="Type" value={form.type} onChange={(v) => setForm({ ...form, type: v })} />
-          <Field label="Live URL" value={form.liveUrl} onChange={(v) => setForm({ ...form, liveUrl: v })} />
+          <Field label="Title" value={form?.title || ''} onChange={(v) => setForm({ ...form, title: v })} />
+          <Field label="Client" value={form?.client || ''} onChange={(v) => setForm({ ...form, client: v })} />
+          <Field label="Industry" value={form?.industry || ''} onChange={(v) => setForm({ ...form, industry: v })} />
+          <Field label="Location" value={form?.location || ''} onChange={(v) => setForm({ ...form, location: v })} />
+          <Field label="Year" value={form?.year || ''} onChange={(v) => setForm({ ...form, year: v })} />
+          <Field label="Type" value={form?.type || ''} onChange={(v) => setForm({ ...form, type: v })} />
+          <Field label="Live URL" value={form?.liveUrl || ''} onChange={(v) => setForm({ ...form, liveUrl: v })} />
         </div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Long Description</label><textarea value={form.longDescription} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Features (one per line)</label><textarea value={form.features.join('\n')} onChange={(e) => setForm({ ...form, features: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Results (one per line)</label><textarea value={form.results.join('\n')} onChange={(e) => setForm({ ...form, results: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} /></div>
-        <Field label="Tech Stack (comma-separated)" value={form.techStack.join(', ')} onChange={(v) => setForm({ ...form, techStack: v.split(',').map((s) => s.trim()) })} />
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form?.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Long Description</label><textarea value={form?.longDescription || ''} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Features (one per line)</label><textarea value={(form?.features || []).join('\n')} onChange={(e) => setForm({ ...form, features: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Results (one per line)</label><textarea value={(form?.results || []).join('\n')} onChange={(e) => setForm({ ...form, results: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} /></div>
+        <Field label="Tech Stack (comma-separated)" value={(form?.techStack || []).join(', ')} onChange={(v) => setForm({ ...form, techStack: v.split(',').map((s) => s.trim()) })} />
       </div>
     </div>
   );
