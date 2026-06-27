@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { SiteConfig } from '@/types';
-import { Phone, Mail, MapPin, Clock, Github, Linkedin } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   config: SiteConfig;
@@ -59,12 +59,12 @@ export function Footer({ config }: FooterProps) {
               </a>
               {config.social.linkedin && (
                 <a href={config.social.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 hover:bg-blue-500 rounded-lg transition-colors" aria-label="LinkedIn">
-                  <Linkedin className="w-4 h-4" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               )}
               {config.social.github && (
                 <a href={config.social.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/10 hover:bg-blue-500 rounded-lg transition-colors" aria-label="GitHub">
-                  <Github className="w-4 h-4" />
+                  <ExternalLink className="w-4 h-4" />
                 </a>
               )}
             </div>

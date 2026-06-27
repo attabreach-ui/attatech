@@ -1,30 +1,48 @@
-import * as LucideIcons from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import {
+  Code, Zap, Bot, Globe, Cloud, RefreshCw, Package, Users,
+  MessageSquareMore, ShoppingCart, BarChart, Settings, Database,
+  Shield, Cpu, Layers, Workflow, Warehouse, Briefcase, Heart,
+  Clock, Snowflake, MapPin, Wrench, Search, Palette, Code2, Rocket,
+  ArrowRight, ArrowLeft, Check, CheckCircle2, ChevronDown, ChevronUp,
+  ChevronLeft, ChevronRight, Circle, X, Plus, Minus, Trash2, Edit2,
+  EyeOff, Save, Loader2, Send, Star, TrendingUp, TrendingDown,
+  Activity, Sparkles, DollarSign, Megaphone, MessageSquare, FileText,
+  Image, ToggleLeft, ToggleRight, Tag, Sliders, Link2, ExternalLink,
+  Building2, Calendar, User, LayoutDashboard, BarChart3, HelpCircle,
+  LogOut, Menu, Eye, Server, Sun, Moon, Bell, Home,
+  Phone, Mail, Link, PenTool,
+  type LucideIcon,
+} from 'lucide-react';
+
+/** Explicit map of commonly-used Lucide icons. Add more here if needed. */
+export const iconMap: Record<string, LucideIcon> = {
+  Code, Zap, Bot, Globe, Cloud, RefreshCw, Package, Users,
+  MessageSquareMore, ShoppingCart, BarChart, Settings, Database,
+  Shield, Cpu, Layers, Workflow, Warehouse, Briefcase, Heart,
+  Clock, Snowflake, MapPin, Wrench, Search, Palette, Code2, Rocket,
+  ArrowRight, ArrowLeft, Check, CheckCircle2, ChevronDown, ChevronUp,
+  ChevronLeft, ChevronRight, Circle, X, Plus, Minus, Trash2, Edit2,
+  EyeOff, Save, Loader2, Send, Star, TrendingUp, TrendingDown,
+  Activity, Sparkles, DollarSign, Megaphone, MessageSquare, FileText,
+  Image, ToggleLeft, ToggleRight, Tag, Sliders, Link2, ExternalLink,
+  Building2, Calendar, User, LayoutDashboard, BarChart3, HelpCircle,
+  LogOut, Menu, Eye, Server, Sun, Moon, Bell, Home,
+  Phone, Mail, Link, PenTool,
+};
 
 /**
- * Centralized icon resolver for AttaTech.
+ * Resolve an icon by name. Tries the explicit map first, then falls back to Code.
  *
- * Tries to resolve ANY Lucide icon name dynamically from the full
- * lucide-react namespace. This means admin users can enter any valid
- * Lucide icon name (e.g. "Brain", "Camera", "Fingerprint") and it
- * will render without code changes.
- *
- * Fallback: Code icon if the name is missing or invalid.
+ * If you need an icon that is not in the map, add its import + entry above.
+ * This keeps the bundle small while still allowing dynamic icon resolution.
  */
 export function getIcon(
   name: string | undefined | null,
-  fallback: LucideIcon = LucideIcons.Code
+  fallback: LucideIcon = Code
 ): LucideIcon {
   if (!name) return fallback;
-  const Icon = (LucideIcons as Record<string, unknown>)[name] as LucideIcon | undefined;
-  return Icon || fallback;
+  return iconMap[name] || fallback;
 }
-
-/** Re-export the full namespace for advanced use cases. */
-export { LucideIcons };
 
 /** Re-export type for convenience. */
 export type { LucideIcon };
-
-/** Explicit map for fast static lookup (optional). */
-export const iconMap: Record<string, LucideIcon> = LucideIcons as unknown as Record<string, LucideIcon>;

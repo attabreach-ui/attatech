@@ -2,7 +2,7 @@ import type { SiteConfig } from '@/types';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
 import { TextReveal } from '@/components/custom/text-reveal';
 import {
-  Github, Figma, Globe, Server, Palette,
+  Globe, Server, Palette, Code, PenTool,
 } from 'lucide-react';
 
 interface TechStackProps {
@@ -56,10 +56,10 @@ const iconComponents: Record<string, React.ElementType> = {
   typescript: TypeScriptIcon,
   tailwind: TailwindIcon,
   nodejs: NodeJsIcon,
-  git: Github,
+  git: Code,
   netlify: Globe,
   vercel: Server,
-  figma: Figma,
+  figma: PenTool,
   lucide: Palette,
   framer: () => <svg viewBox="0 0 24 24" className="w-8 h-8" fill="currentColor"><path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z"/></svg>,
 };
