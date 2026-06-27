@@ -1,18 +1,11 @@
 import type { SiteConfig } from '@/types';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
 import { TextReveal } from '@/components/custom/text-reveal';
-import { Search, Palette, Code2, Rocket } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 interface ProcessProps {
   config: SiteConfig;
 }
-
-const iconMap: Record<string, React.ElementType> = {
-  Search,
-  Palette,
-  Code2,
-  Rocket,
-};
 
 export function Process({ config }: ProcessProps) {
   return (
@@ -43,7 +36,7 @@ export function Process({ config }: ProcessProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {config.process.map((step, i) => {
-            const Icon = iconMap[step.icon] || Search;
+            const Icon = getIcon(step.icon, getIcon('Search'));
             return (
               <ScrollReveal key={step.id} delay={i * 0.15}>
                 <div className="relative text-center group">

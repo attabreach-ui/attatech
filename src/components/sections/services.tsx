@@ -1,27 +1,14 @@
 import type { SiteConfig, Service } from '@/types';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
 import { TextReveal } from '@/components/custom/text-reveal';
-import {
-  Code, Warehouse, Package, Users, Bot, Cloud, Globe, RefreshCw,
-} from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 interface ServicesProps {
   config: SiteConfig;
 }
 
-const iconMap: Record<string, React.ElementType> = {
-  Code,
-  Warehouse,
-  Package,
-  Users,
-  Bot,
-  Cloud,
-  Globe,
-  RefreshCw,
-};
-
 function ServiceCard({ service, index }: { service: Service; index: number }) {
-  const Icon = iconMap[service.icon] || Code;
+  const Icon = getIcon(service.icon, getIcon('Code'));
 
   return (
     <ScrollReveal delay={index * 0.08}>

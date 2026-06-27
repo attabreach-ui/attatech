@@ -1,18 +1,11 @@
 import type { SiteConfig } from '@/types';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
 import { AnimatedCounter } from '@/components/custom/animated-counter';
-import { Briefcase, Heart, Clock, Snowflake } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 interface StatsProps {
   config: SiteConfig;
 }
-
-const iconMap: Record<string, React.ElementType> = {
-  Briefcase,
-  Heart,
-  Clock,
-  Snowflake,
-};
 
 export function Stats({ config }: StatsProps) {
   return (
@@ -20,7 +13,7 @@ export function Stats({ config }: StatsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {(config.stats || []).map((stat, i) => {
-            const Icon = iconMap[stat.icon] || Briefcase;
+            const Icon = getIcon(stat.icon, getIcon('Briefcase'));
             const isNumeric = !isNaN(Number(stat.value));
 
             return (

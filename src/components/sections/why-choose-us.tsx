@@ -1,15 +1,11 @@
 import type { SiteConfig } from '@/types';
 import { ScrollReveal } from '@/components/custom/scroll-reveal';
 import { TextReveal } from '@/components/custom/text-reveal';
-import { Briefcase, MapPin, Wrench, Clock, Zap } from 'lucide-react';
+import { getIcon } from '@/lib/icons';
 
 interface WhyChooseUsProps {
   config: SiteConfig;
 }
-
-const iconMap: Record<string, React.ElementType> = {
-  Briefcase, MapPin, Wrench, Clock, Zap,
-};
 
 export function WhyChooseUs({ config }: WhyChooseUsProps) {
   if ((config.whyChooseUs || []).length === 0) return null;
@@ -37,7 +33,7 @@ export function WhyChooseUs({ config }: WhyChooseUsProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {config.whyChooseUs.map((item, i) => {
-            const Icon = iconMap[item.icon] || Zap;
+            const Icon = getIcon(item.icon, getIcon('Zap'));
             return (
               <ScrollReveal key={item.id} delay={i * 0.1}>
                 <div className="group bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 h-full">
