@@ -87,7 +87,7 @@ export const defaultConfig: SiteConfig = {
   ],
   process: [
     { id: '1', number: '01', title: 'Discovery', description: 'We discuss your business needs, analyze workflows, and define the project scope together.', icon: 'Search' },
-    { id: '2', number: '02', title: 'Design', description: 'I create wireframes and UI mockups so you can visualize the system before development begins.', icon: 'Palette' },
+    { id: '2', number: '02', title: 'Design', description: 'We create wireframes and UI mockups so you can visualize the system before development begins.', icon: 'Palette' },
     { id: '3', number: '03', title: 'Development', description: 'Your software is built with modern tech, with weekly progress updates and demos.', icon: 'Code2' },
     { id: '4', number: '04', title: 'Deployment', description: 'The system goes live with training, documentation, and ongoing support included.', icon: 'Rocket' },
   ],
