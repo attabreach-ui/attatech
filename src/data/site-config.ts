@@ -77,7 +77,7 @@ export const defaultConfig: SiteConfig = {
       longDescription: 'A full-featured enterprise Warehouse Management System built from scratch for Pakfrost (PVT) Limited, a premium temperature-controlled warehousing company operating -18°C to -22°C frozen storage facilities in Lahore.',
       features: ['Secure Login & Role-Based User Access Control', 'Real-Time Dashboard with KPI Cards', '7-Day Activity Charts', 'Cold Room Temperature Monitoring', 'Stock IN / Receiving with Auto IGP Generation', 'Stock OUT / Dispatch with Auto OGP Generation', 'Expiry Alerts (7-day urgent, 30-day warning)', 'Multi-User Support with Admin/Operator roles'],
       results: ['Replaced manual paper-based tracking system', 'Eliminated stock misplacement errors', 'Automated IGP/OGP document generation', 'Real-time temperature compliance monitoring'],
-      techStack: ['Next.js 14', 'React', 'TypeScript', 'Tailwind CSS', 'Netlify'],
+      techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Netlify'],
       liveUrl: 'https://pakfrost.netlify.app',
       screenshots: [
         { src: '/images/projects/pakfrost/pakfrost-login.jpg', alt: 'Pakfrost WMS login page' },
@@ -92,7 +92,7 @@ export const defaultConfig: SiteConfig = {
     { id: '4', number: '04', title: 'Deployment', description: 'The system goes live with training, documentation, and ongoing support included.', icon: 'Rocket' },
   ],
   techStack: [
-    { id: '1', name: 'Next.js 14', icon: 'nextjs', description: 'React framework for production' },
+    { id: '1', name: 'Next.js', icon: 'nextjs', description: 'React framework for production' },
     { id: '2', name: 'React', icon: 'react', description: 'UI library for web apps' },
     { id: '3', name: 'TypeScript', icon: 'typescript', description: 'Type-safe JavaScript' },
     { id: '4', name: 'Tailwind CSS', icon: 'tailwind', description: 'Utility-first CSS framework' },
@@ -102,6 +102,8 @@ export const defaultConfig: SiteConfig = {
     { id: '8', name: 'Supabase', icon: 'supabase', description: 'Open-source backend' },
     { id: '9', name: 'Vercel', icon: 'vercel', description: 'Deployment platform' },
     { id: '10', name: 'Figma', icon: 'figma', description: 'Design tool' },
+    { id: '9', name: 'OpenAI', icon: 'openai', description: 'AI & automation' },
+    { id: '10', name: 'LangChain', icon: 'langchain', description: 'LLM framework' },
   ],
   testimonials: [],
   faqs: [
