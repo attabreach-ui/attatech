@@ -17,6 +17,7 @@ import { ProjectPage } from '@/pages/project';
 import { ScrollToTop } from '@/components/scroll-to-top';
 import { SEOHead } from '@/components/seo-head';
 import { AnalyticsScripts } from '@/components/analytics-scripts';
+import { ThemeProvider } from '@/components/theme-provider';
 
 function App() {
   const location = useLocation();
@@ -85,90 +86,92 @@ function App() {
   }, [refetch]);
 
   return (
-    <div className={darkMode ? 'dark' : ''}>
-      <SEOHead config={config} pathname={location.pathname} />
-      <AnalyticsScripts config={config} />
-      <CustomCursor />
-      {!preloaderDone && !isAdminRoute && <Preloader onComplete={() => setPreloaderDone(true)} />}
+    <ThemeProvider themeId={config.theme || 'ocean-blue'}>
+      <div className={darkMode ? 'dark' : ''}>
+        <SEOHead config={config} pathname={location.pathname} />
+        <AnalyticsScripts config={config} />
+        <CustomCursor />
+        {!preloaderDone && !isAdminRoute && <Preloader onComplete={() => setPreloaderDone(true)} />}
 
-      <div className={`transition-opacity duration-500 ${preloaderDone || isAdminRoute ? 'opacity-100' : 'opacity-0'}`}>
-        {!isAdminRoute && <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />}
+        <div className={`transition-opacity duration-500 ${preloaderDone || isAdminRoute ? 'opacity-100' : 'opacity-0'}`}>
+          {!isAdminRoute && <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />}
 
-        <ScrollToTop />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <HomePage config={config} onUpdateTestimonials={updateTestimonials} />
-                <Footer config={config} />
-                <BackToTop />
-              </>
-            }
-          />
-          <Route
-            path="/pricing"
-            element={
-              <>
-                <PricingPage config={config} />
-                <Footer config={config} />
-              </>
-            }
-          />
-          <Route
-            path="/blog"
-            element={
-              <>
-                <BlogPage config={config} />
-                <Footer config={config} />
-              </>
-            }
-          />
-          <Route
-            path="/blog/:slug"
-            element={
-              <>
-                <BlogPostPage config={config} />
-                <Footer config={config} />
-              </>
-            }
-          />
-          <Route
-            path="/projects/:slug"
-            element={
-              <>
-                <ProjectPage config={config} />
-                <Footer config={config} />
-              </>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <AdminPage
-                config={config}
-                onSaveSettings={saveSettings}
-                onSaveStats={saveStats}
-                onSaveServices={saveServices}
-                onSaveProjects={saveProjects}
-                onSaveFaqs={saveFaqs}
-                onSavePricing={savePricing}
-                onSaveBlogPosts={saveBlogPosts}
-                onSaveWhyChooseUs={saveWhyChooseUs}
-                onSaveClientLogos={saveClientLogos}
-                onSaveAnalytics={saveAnalytics}
-                onSaveNewsletter={saveNewsletter}
-                onSaveIntake={saveIntake}
-                onRefetch={refetch}
-                user={user}
-                darkMode={darkMode}
-                toggleDarkMode={toggleDarkMode}
-              />
-            }
-          />
-        </Routes>
+          <ScrollToTop />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <HomePage config={config} onUpdateTestimonials={updateTestimonials} />
+                  <Footer config={config} />
+                  <BackToTop />
+                </>
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <>
+                  <PricingPage config={config} />
+                  <Footer config={config} />
+                </>
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <>
+                  <BlogPage config={config} />
+                  <Footer config={config} />
+                </>
+              }
+            />
+            <Route
+              path="/blog/:slug"
+              element={
+                <>
+                  <BlogPostPage config={config} />
+                  <Footer config={config} />
+                </>
+              }
+            />
+            <Route
+              path="/projects/:slug"
+              element={
+                <>
+                  <ProjectPage config={config} />
+                  <Footer config={config} />
+                </>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <AdminPage
+                  config={config}
+                  onSaveSettings={saveSettings}
+                  onSaveStats={saveStats}
+                  onSaveServices={saveServices}
+                  onSaveProjects={saveProjects}
+                  onSaveFaqs={saveFaqs}
+                  onSavePricing={savePricing}
+                  onSaveBlogPosts={saveBlogPosts}
+                  onSaveWhyChooseUs={saveWhyChooseUs}
+                  onSaveClientLogos={saveClientLogos}
+                  onSaveAnalytics={saveAnalytics}
+                  onSaveNewsletter={saveNewsletter}
+                  onSaveIntake={saveIntake}
+                  onRefetch={refetch}
+                  user={user}
+                  darkMode={darkMode}
+                  toggleDarkMode={toggleDarkMode}
+                />
+              }
+            />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

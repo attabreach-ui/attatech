@@ -24,6 +24,7 @@ function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
   if (row.analytics != null) result.analytics = row.analytics as SiteConfig['analytics'];
   if (row.newsletter != null) result.newsletter = row.newsletter as SiteConfig['newsletter'];
   if (row.intake != null) result.intake = row.intake as SiteConfig['intake'];
+  if (row.theme != null) result.theme = row.theme as string;
   const fse = (row.formspree_endpoint as string) || '';
   result.formspreeEndpoint = fse.includes('YOUR_FORM_ID') ? defaultConfig.formspreeEndpoint : (fse || defaultConfig.formspreeEndpoint);
   return result;

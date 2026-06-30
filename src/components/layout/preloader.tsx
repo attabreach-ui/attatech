@@ -44,11 +44,11 @@ export function Preloader({ onComplete }: PreloaderProps) {
         </div>
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-2">AttaTech</h2>
-          <p className="text-blue-400 text-sm tracking-widest uppercase">Loading</p>
+          <p className="text-brand-400 text-sm tracking-widest uppercase">Loading</p>
         </div>
         <div className="w-64 h-1 bg-white/10 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full transition-all duration-150 ease-out"
+            className="h-full bg-gradient-to-r from-brand-400 to-brand-secondary-500 rounded-full transition-all duration-150 ease-out"
             style={{ width: `${Math.min(progress, 100)}%` }}
           />
         </div>

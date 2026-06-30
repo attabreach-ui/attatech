@@ -191,6 +191,7 @@ export interface SiteConfig {
   analytics: AnalyticsConfig;
   newsletter: NewsletterConfig;
   intake: IntakeConfig;
+  theme: string;
   formspreeEndpoint: string;
 }
 

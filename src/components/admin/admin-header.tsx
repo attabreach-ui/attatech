@@ -91,7 +91,7 @@ export function AdminHeader({
       case 'success': return <CheckCircle2 className="w-4 h-4 text-green-500" />;
       case 'warning': return <AlertCircle className="w-4 h-4 text-yellow-500" />;
       case 'error': return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default: return <Info className="w-4 h-4 text-blue-500" />;
+      default: return <Info className="w-4 h-4 text-brand-500" />;
     }
   };
 
@@ -182,7 +182,7 @@ export function AdminHeader({
                             key={n.id}
                             className={cn(
                               'p-3 flex items-start gap-3 border-b border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer',
-                              !n.read && 'bg-blue-50/50 dark:bg-blue-500/5'
+                              !n.read && 'bg-brand-50/50 dark:bg-brand-500/5'
                             )}
                           >
                             {getNotifIcon(n.type)}
@@ -193,7 +193,7 @@ export function AdminHeader({
                                 {n.timestamp.toLocaleTimeString()}
                               </p>
                             </div>
-                            {!n.read && <div className="w-2 h-2 bg-blue-500 rounded-full mt-1 shrink-0" />}
+                            {!n.read && <div className="w-2 h-2 bg-brand-500 rounded-full mt-1 shrink-0" />}
                           </div>
                         ))
                       )}
@@ -209,7 +209,7 @@ export function AdminHeader({
                 onClick={() => setUserMenuOpen((p) => !p)}
                 className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
               >
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center text-white text-sm font-bold">
                   {user?.email ? getInitials(user.email) : 'A'}
                 </div>
                 <span className="hidden md:block text-sm text-[#0a0e27] dark:text-white max-w-[120px] truncate">

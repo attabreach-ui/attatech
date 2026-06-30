@@ -69,7 +69,7 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
               className="h-10 w-10 object-contain"
             />
             <span className="text-xl font-bold text-[#0a0e27] dark:text-white">
-              Atta<span className="text-blue-500">Tech</span>
+              Atta<span className="text-brand-500">Tech</span>
             </span>
           </Link>
 
@@ -83,9 +83,9 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
                   handleNavClick(link.href);
                 }}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-blue-500',
+                  'text-sm font-medium transition-colors hover:text-brand-500',
                   location.hash === link.href.replace('/', '') || (link.href === '/' && location.hash === '')
-                    ? 'text-blue-500'
+                    ? 'text-brand-500'
                     : 'text-[#0a0e27]/70 dark:text-white/70'
                 )}
               >
@@ -110,7 +110,7 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
               href="https://wa.me/923478481093"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline-flex px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors"
+              className="hidden md:inline-flex px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
             >
               Get Started
             </a>
@@ -145,7 +145,7 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
                 e.preventDefault();
                 handleNavClick(link.href);
               }}
-              className="text-2xl font-semibold text-[#0a0e27] dark:text-white hover:text-blue-500 transition-colors"
+              className="text-2xl font-semibold text-[#0a0e27] dark:text-white hover:text-brand-500 transition-colors"
               style={{
                 opacity: mobileOpen ? 1 : 0,
                 transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',
@@ -159,7 +159,7 @@ export function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
             href="https://wa.me/923478481093"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+            className="mt-4 px-8 py-3 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-colors"
             style={{
               opacity: mobileOpen ? 1 : 0,
               transform: mobileOpen ? 'translateY(0)' : 'translateY(20px)',

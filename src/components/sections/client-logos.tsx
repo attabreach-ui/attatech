@@ -15,7 +15,7 @@ export function ClientLogos({ config }: ClientLogosProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Trusted By
             </span>
           </ScrollReveal>
@@ -42,7 +42,7 @@ export function ClientLogos({ config }: ClientLogosProps) {
                     className="h-8 w-auto opacity-50 group-hover:opacity-100 transition-opacity"
                   />
                 ) : (
-                  <div className="flex items-center gap-2 text-muted-foreground group-hover:text-blue-500 transition-colors">
+                  <div className="flex items-center gap-2 text-muted-foreground group-hover:text-brand-500 transition-colors">
                     <Globe className="w-5 h-5" />
                     <span className="font-semibold text-sm">{logo.name}</span>
                   </div>

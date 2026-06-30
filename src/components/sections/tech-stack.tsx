@@ -74,7 +74,7 @@ export function TechStack({ config }: TechStackProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Technology
             </span>
           </ScrollReveal>
@@ -90,8 +90,8 @@ export function TechStack({ config }: TechStackProps) {
             const Icon = iconComponents[tech.icon] || Globe;
             return (
               <ScrollReveal key={tech.id} delay={i * 0.08}>
-                <div className="group flex flex-col items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-500/30 transition-all duration-300 animate-float" style={{ animationDelay: `${i * 0.2}s`, animationDuration: `${4 + i * 0.3}s` }}>
-                  <div className="text-white/70 group-hover:text-blue-400 transition-colors">
+                <div className="group flex flex-col items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-500/30 transition-all duration-300 animate-float" style={{ animationDelay: `${i * 0.2}s`, animationDuration: `${4 + i * 0.3}s` }}>
+                  <div className="text-white/70 group-hover:text-brand-400 transition-colors">
                     <Icon />
                   </div>
                   <span className="text-sm font-medium text-white/80 group-hover:text-white text-center">{tech.name}</span>

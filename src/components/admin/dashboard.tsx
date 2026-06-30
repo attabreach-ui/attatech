@@ -22,6 +22,7 @@ import {
 import { AdminHeader, type Notification } from './admin-header';
 import type { User } from '@supabase/supabase-js';
 import { defaultConfig } from '@/data/site-config';
+import { themePresets, generateThemeCSS, defaultThemeId } from '@/lib/themes';
 
 interface DashboardProps {
   config: SiteConfig;
@@ -101,8 +102,8 @@ const mockChartData = [
 ];
 
 const mockContentDistribution = [
-  { name: 'Projects', value: 1, color: '#3b82f6' },
-  { name: 'Services', value: 8, color: '#6366f1' },
+  { name: 'Projects', value: 1, color: 'hsl(var(--brand-primary-500))' },
+  { name: 'Services', value: 8, color: 'hsl(var(--brand-secondary-500))' },
   { name: 'Reviews', value: 1, color: '#22c55e' },
   { name: 'FAQs', value: 6, color: '#f97316' },
 ];
@@ -263,7 +264,7 @@ export function Dashboard({
                       className={cn(
                         'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all',
                         activeTab === tab.id
-                          ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-l-2 border-blue-500'
+                          ? 'bg-brand-500/10 text-brand-600 dark:text-brand-400 border-l-2 border-brand-500'
                           : 'text-muted-foreground hover:bg-black/5 dark:hover:bg-white/10 hover:text-[#0a0e27] dark:hover:text-white',
                         (!sidebarOpen && !mobileSidebarOpen) && 'lg:justify-center'
                       )}
@@ -324,7 +325,7 @@ export function Dashboard({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setActiveTab('projects')}
-                    className="flex items-center gap-2 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                     Add Project
@@ -354,8 +355,8 @@ export function Dashboard({
                       <p className="text-xs text-muted-foreground">Visitors and page views</p>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><span className="w-2 h-2 rounded-full bg-blue-500" /> Visitors</span>
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><span className="w-2 h-2 rounded-full bg-indigo-400" /> Views</span>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><span className="w-2 h-2 rounded-full bg-brand-500" /> Visitors</span>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><span className="w-2 h-2 rounded-full bg-brand-secondary-400" /> Views</span>
                     </div>
                   </div>
                   <div className="h-64">
@@ -365,8 +366,8 @@ export function Dashboard({
                         <XAxis dataKey="name" tick={{ fontSize: 12 }} stroke="rgba(0,0,0,0.3)" />
                         <YAxis tick={{ fontSize: 12 }} stroke="rgba(0,0,0,0.3)" />
                         <Tooltip contentStyle={{ backgroundColor: darkMode ? '#0f1535' : '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '8px', fontSize: '12px' }} />
-                        <Line type="monotone" dataKey="visitors" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4, fill: '#3b82f6' }} />
-                        <Line type="monotone" dataKey="pageViews" stroke="#6366f1" strokeWidth={2} dot={{ r: 4, fill: '#6366f1' }} />
+                        <Line type="monotone" dataKey="visitors" stroke="hsl(var(--brand-primary-500))" strokeWidth={2} dot={{ r: 4, fill: 'hsl(var(--brand-primary-500))' }} />
+                        <Line type="monotone" dataKey="pageViews" stroke="hsl(var(--brand-secondary-500))" strokeWidth={2} dot={{ r: 4, fill: 'hsl(var(--brand-secondary-500))' }} />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
@@ -419,8 +420,8 @@ export function Dashboard({
                   <div className="space-y-3">
                     {activityFeed.map((item) => (
                       <div key={item.id} className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-                          <item.icon className="w-4 h-4 text-blue-500" />
+                        <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center shrink-0">
+                          <item.icon className="w-4 h-4 text-brand-500" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-[#0a0e27] dark:text-white">{item.title}</p>
@@ -463,7 +464,7 @@ export function Dashboard({
 
 function StatCard({ label, value, icon: Icon, color, trend, trendLabel }: { label: string; value: number; icon: React.ElementType; color: string; trend: number; trendLabel: string }) {
   const colors: Record<string, string> = {
-    blue: 'bg-blue-500/10 text-blue-500', indigo: 'bg-indigo-500/10 text-indigo-500',
+    blue: 'bg-brand-500/10 text-brand-500', indigo: 'bg-brand-secondary-500/10 text-brand-secondary-500',
     green: 'bg-green-500/10 text-green-500', orange: 'bg-orange-500/10 text-orange-500',
   };
   const TrendIcon = trend > 0 ? TrendingUp : trend < 0 ? TrendingDown : Minus;
@@ -485,7 +486,7 @@ function StatCard({ label, value, icon: Icon, color, trend, trendLabel }: { labe
 function QuickActionButton({ icon: Icon, label, description, onClick }: { icon: React.ElementType; label: string; description: string; onClick: () => void }) {
   return (
     <button onClick={onClick} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-left">
-      <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0"><Icon className="w-4 h-4 text-blue-500" /></div>
+      <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center shrink-0"><Icon className="w-4 h-4 text-brand-500" /></div>
       <div className="flex-1 min-w-0"><p className="text-sm font-medium text-[#0a0e27] dark:text-white">{label}</p><p className="text-xs text-muted-foreground">{description}</p></div>
       <ArrowUpRight className="w-4 h-4 text-muted-foreground shrink-0" />
     </button>
@@ -530,7 +531,7 @@ function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSave
           <h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">General Settings</h1>
           <p className="text-sm text-muted-foreground mt-0.5">Manage your company info, contact, social links, SEO, and hero section</p>
         </div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white rounded-lg transition-colors">
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white rounded-lg transition-colors">
           {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save Changes
         </button>
       </div>
@@ -552,7 +553,7 @@ function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSave
           </div>
           <div className="mt-4">
             <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Bio</label>
-            <textarea value={form.founder.bio} onChange={(e) => setForm({ ...form, founder: { ...form.founder, bio: e.target.value } })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} />
+            <textarea value={form.founder.bio} onChange={(e) => setForm({ ...form, founder: { ...form.founder, bio: e.target.value } })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={3} />
           </div>
           <div className="mt-4">
             <Field label="Photo URL" value={form.founder.photo} onChange={(v) => setForm({ ...form, founder: { ...form.founder, photo: v } })} />
@@ -587,7 +588,7 @@ function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSave
             <Field label="Title" value={form.seo.title} onChange={(v) => setForm({ ...form, seo: { ...form.seo, title: v } })} />
             <div>
               <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label>
-              <textarea value={form.seo.description} onChange={(e) => setForm({ ...form, seo: { ...form.seo, description: e.target.value } })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} />
+              <textarea value={form.seo.description} onChange={(e) => setForm({ ...form, seo: { ...form.seo, description: e.target.value } })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} />
             </div>
             <Field label="Keywords" value={form.seo.keywords} onChange={(v) => setForm({ ...form, seo: { ...form.seo, keywords: v } })} />
             <Field label="OG Image URL" value={form.seo.ogImage} onChange={(v) => setForm({ ...form, seo: { ...form.seo, ogImage: v } })} />
@@ -610,6 +611,58 @@ function SettingsEditor({ config, onSaveSettings }: { config: SiteConfig; onSave
           </div>
         </Section>
 
+        <Section title="Theme">
+          <p className="text-sm text-muted-foreground mb-4">
+            Choose a professional color theme for your entire website. Changes apply instantly across all pages.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {themePresets.map((preset) => {
+              const isActive = (form.theme || defaultThemeId) === preset.id;
+              const css = generateThemeCSS(preset.id);
+              return (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => setForm({ ...form, theme: preset.id })}
+                  className={`relative text-left p-4 rounded-xl border-2 transition-all ${
+                    isActive
+                      ? 'border-brand-500 bg-brand-50 dark:bg-brand-500/10'
+                      : 'border-black/5 dark:border-white/10 hover:border-brand-300 dark:hover:border-brand-700'
+                  }`}
+                >
+                  {/* Color swatches */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <span
+                      className="w-8 h-8 rounded-full shadow-sm"
+                      style={{ backgroundColor: `hsl(${preset.colors['primary-500']})` }}
+                    />
+                    <span
+                      className="w-8 h-8 rounded-full shadow-sm"
+                      style={{ backgroundColor: `hsl(${preset.colors['secondary-500']})` }}
+                    />
+                    <span
+                      className="w-8 h-8 rounded-full shadow-sm"
+                      style={{ backgroundColor: `hsl(${preset.colors['accent-500']})` }}
+                    />
+                    {isActive && (
+                      <span className="ml-auto text-brand-500">
+                        <Check className="w-5 h-5" />
+                      </span>
+                    )}
+                  </div>
+                  <h4 className="font-medium text-[#0a0e27] dark:text-white text-sm">{preset.name}</h4>
+                  <p className="text-xs text-muted-foreground mt-1">{preset.description}</p>
+                  {/* Injected style for preview */}
+                  <style>{css}</style>
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-xs text-muted-foreground mt-3">
+            Preview updates live. Save to apply permanently.
+          </p>
+        </Section>
+
         <Section title="Contact Form">
           <Field label="Formspree Endpoint" value={form.formspreeEndpoint} onChange={(v) => setForm({ ...form, formspreeEndpoint: v })} />
           <p className="text-xs text-muted-foreground mt-1">Get your endpoint from https://formspree.io (e.g., https://formspree.io/f/YOUR_ID)</p>
@@ -627,7 +680,7 @@ function Field({ label, value, onChange }: { label: string; value: string; onCha
   return (
     <div>
       <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">{label}</label>
-      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" />
     </div>
   );
 }
@@ -667,23 +720,23 @@ function PricingEditor({ config, onSavePricing, editingPricing, setEditingPricin
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Pricing Tiers</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your pricing plans</p></div>
         <div className="flex items-center gap-2">
-          <button onClick={addTier} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Tier</button>
+          <button onClick={addTier} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Tier</button>
           <button onClick={savePricing} disabled={saving} className="flex items-center gap-2 px-4 py-2 border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 text-sm font-medium rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
         </div>
       </div>
       <div className="space-y-3">
         {pricing.length === 0 ? (
           <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><DollarSign className="w-8 h-8 text-blue-500" /></div>
+            <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><DollarSign className="w-8 h-8 text-brand-500" /></div>
             <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No pricing tiers yet</h3>
             <p className="text-sm text-muted-foreground mb-4">Add your first pricing tier to show on the pricing page.</p>
-            <button onClick={addTier} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Tier</button>
+            <button onClick={addTier} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Tier</button>
           </div>
         ) : (
           pricing.map((tier) => (
             <div key={tier.id} className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-4 flex items-center justify-between hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className={`w-3 h-3 rounded-full ${tier.highlighted ? 'bg-blue-500' : 'bg-slate-300'}`} />
+                <div className={`w-3 h-3 rounded-full ${tier.highlighted ? 'bg-brand-500' : 'bg-slate-300'}`} />
                 <div>
                   <h3 className="font-medium text-[#0a0e27] dark:text-white">{tier.name}</h3>
                   <p className="text-sm text-muted-foreground">{tier.price} {tier.priceUnit} — {tier.features.length} features</p>
@@ -721,7 +774,7 @@ function PricingTierForm({ tier, onSave, onCancel }: { tier: PricingTier; onSave
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form.name ? 'Edit Pricing Tier' : 'Add Pricing Tier'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
@@ -732,23 +785,23 @@ function PricingTierForm({ tier, onSave, onCancel }: { tier: PricingTier; onSave
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-[#0a0e27] dark:text-white">Highlighted</label>
             <button onClick={() => setForm({ ...form, highlighted: !form.highlighted })} className="p-2 rounded-lg transition-colors">
-              {form.highlighted ? <ToggleRight className="w-6 h-6 text-blue-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
+              {form.highlighted ? <ToggleRight className="w-6 h-6 text-brand-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
             </button>
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label>
-          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} />
+          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} />
         </div>
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Features</label>
           <div className="flex gap-2 mb-2">
-            <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addFeature()} placeholder="Add a feature..." className="flex-1 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            <button onClick={addFeature} className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /></button>
+            <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addFeature()} placeholder="Add a feature..." className="flex-1 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            <button onClick={addFeature} className="px-3 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /></button>
           </div>
           <div className="flex flex-wrap gap-2">
             {form.features.map((f, i) => (
-              <span key={i} className="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm rounded-full flex items-center gap-1">
+              <span key={i} className="px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm rounded-full flex items-center gap-1">
                 {f} <button onClick={() => removeFeature(i)} className="hover:text-red-500"><X className="w-3 h-3" /></button>
               </span>
             ))}
@@ -800,17 +853,17 @@ function BlogEditor({ config, onSaveBlogPosts, editingBlogPost, setEditingBlogPo
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Blog Posts</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your blog content</p></div>
         <div className="flex items-center gap-2">
-          <button onClick={addPost} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Post</button>
+          <button onClick={addPost} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Post</button>
           <button onClick={savePosts} disabled={saving} className="flex items-center gap-2 px-4 py-2 border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 text-sm font-medium rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
         </div>
       </div>
       <div className="space-y-3">
         {posts.length === 0 ? (
           <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><FileText className="w-8 h-8 text-blue-500" /></div>
+            <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><FileText className="w-8 h-8 text-brand-500" /></div>
             <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No blog posts yet</h3>
             <p className="text-sm text-muted-foreground mb-4">Add your first blog post to start building your content.</p>
-            <button onClick={addPost} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Post</button>
+            <button onClick={addPost} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Post</button>
           </div>
         ) : (
           posts.map((post) => (
@@ -857,7 +910,7 @@ function BlogPostForm({ post, onSave, onCancel }: { post: BlogPost; onSave: (p: 
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form.title ? 'Edit Blog Post' : 'Add Blog Post'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
@@ -870,27 +923,27 @@ function BlogPostForm({ post, onSave, onCancel }: { post: BlogPost; onSave: (p: 
           <div className="flex items-center gap-2">
             <label className="text-sm font-medium text-[#0a0e27] dark:text-white">Published</label>
             <button onClick={() => setForm({ ...form, published: !form.published })} className="p-2 rounded-lg transition-colors">
-              {form.published ? <ToggleRight className="w-6 h-6 text-blue-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
+              {form.published ? <ToggleRight className="w-6 h-6 text-brand-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
             </button>
           </div>
         </div>
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Excerpt</label>
-          <textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} />
+          <textarea value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} />
         </div>
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Content</label>
-          <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={8} />
+          <textarea value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={8} />
         </div>
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Tags</label>
           <div className="flex gap-2 mb-2">
-            <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addTag()} placeholder="Add a tag..." className="flex-1 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            <button onClick={addTag} className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /></button>
+            <input type="text" value={tagInput} onChange={(e) => setTagInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && addTag()} placeholder="Add a tag..." className="flex-1 px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" />
+            <button onClick={addTag} className="px-3 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /></button>
           </div>
           <div className="flex flex-wrap gap-2">
             {form.tags.map((tag, i) => (
-              <span key={i} className="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm rounded-full flex items-center gap-1">
+              <span key={i} className="px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm rounded-full flex items-center gap-1">
                 {tag} <button onClick={() => removeTag(i)} className="hover:text-red-500"><X className="w-3 h-3" /></button>
               </span>
             ))}
@@ -931,17 +984,17 @@ function WhyChooseEditor({ config, onSaveWhyChooseUs }: { config: SiteConfig; on
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Why Choose Us</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your differentiators</p></div>
         <div className="flex items-center gap-2">
-          <button onClick={addItem} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Item</button>
+          <button onClick={addItem} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Item</button>
           <button onClick={saveItems} disabled={saving} className="flex items-center gap-2 px-4 py-2 border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 text-sm font-medium rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
         </div>
       </div>
       <div className="space-y-3">
         {items.length === 0 ? (
           <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><Check className="w-8 h-8 text-blue-500" /></div>
+            <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><Check className="w-8 h-8 text-brand-500" /></div>
             <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No items yet</h3>
             <p className="text-sm text-muted-foreground mb-4">Add items to explain why clients should choose you.</p>
-            <button onClick={addItem} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Item</button>
+            <button onClick={addItem} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Item</button>
           </div>
         ) : (
           items.map((item) => (
@@ -953,7 +1006,7 @@ function WhyChooseEditor({ config, onSaveWhyChooseUs }: { config: SiteConfig; on
               <Field label="Title" value={item.title} onChange={(v) => updateItem(item.id, 'title', v)} />
               <div>
                 <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label>
-                <textarea value={item.description} onChange={(e) => updateItem(item.id, 'description', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} />
+                <textarea value={item.description} onChange={(e) => updateItem(item.id, 'description', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} />
               </div>
             </div>
           ))
@@ -993,17 +1046,17 @@ function LogosEditor({ config, onSaveClientLogos }: { config: SiteConfig; onSave
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Client Logos</h1><p className="text-sm text-muted-foreground mt-0.5">Manage trusted client logos</p></div>
         <div className="flex items-center gap-2">
-          <button onClick={addLogo} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Logo</button>
+          <button onClick={addLogo} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Logo</button>
           <button onClick={saveLogos} disabled={saving} className="flex items-center gap-2 px-4 py-2 border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 text-sm font-medium rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
         </div>
       </div>
       <div className="space-y-3">
         {logos.length === 0 ? (
           <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><Image className="w-8 h-8 text-blue-500" /></div>
+            <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><Image className="w-8 h-8 text-brand-500" /></div>
             <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No logos yet</h3>
             <p className="text-sm text-muted-foreground mb-4">Add client logos to build social proof.</p>
-            <button onClick={addLogo} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Logo</button>
+            <button onClick={addLogo} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Logo</button>
           </div>
         ) : (
           logos.map((logo) => (
@@ -1040,7 +1093,7 @@ function AnalyticsEditor({ config, onSaveAnalytics }: { config: SiteConfig; onSa
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Analytics</h1><p className="text-sm text-muted-foreground mt-0.5">Connect tracking and analytics tools</p></div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <div>
@@ -1076,13 +1129,13 @@ function NewsletterEditor({ config, onSaveNewsletter }: { config: SiteConfig; on
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Newsletter</h1><p className="text-sm text-muted-foreground mt-0.5">Configure newsletter signup section</p></div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <div className="flex items-center gap-2">
           <label className="text-sm font-medium text-[#0a0e27] dark:text-white">Enabled</label>
           <button onClick={() => setForm({ ...form, enabled: !form.enabled })} className="p-2 rounded-lg transition-colors">
-            {form.enabled ? <ToggleRight className="w-6 h-6 text-blue-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
+            {form.enabled ? <ToggleRight className="w-6 h-6 text-brand-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
           </button>
         </div>
         <Field label="Title" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
@@ -1147,43 +1200,43 @@ function IntakeEditor({ config, onSaveIntake }: { config: SiteConfig; onSaveInta
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Project Intake</h1><p className="text-sm text-muted-foreground mt-0.5">Configure multi-step project intake form</p></div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
+        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white rounded-lg transition-colors">{saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save</button>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <div className="flex items-center gap-2">
           <label className="text-sm font-medium text-[#0a0e27] dark:text-white">Enabled</label>
           <button onClick={() => setForm({ ...form, enabled: !form.enabled })} className="p-2 rounded-lg transition-colors">
-            {form.enabled ? <ToggleRight className="w-6 h-6 text-blue-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
+            {form.enabled ? <ToggleRight className="w-6 h-6 text-brand-500" /> : <ToggleLeft className="w-6 h-6 text-muted-foreground" />}
           </button>
         </div>
         <Field label="Title" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
         <div>
           <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label>
-          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} />
+          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} />
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-[#0a0e27] dark:text-white">Steps</h3>
-            <button onClick={addStep} className="flex items-center gap-2 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Step</button>
+            <button onClick={addStep} className="flex items-center gap-2 px-3 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Step</button>
           </div>
           {form.steps.map((step, stepIndex) => (
             <div key={step.id} className="border border-black/5 dark:border-white/10 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-blue-500">Step {stepIndex + 1}</span>
+                <span className="text-sm font-medium text-brand-500">Step {stepIndex + 1}</span>
                 <Field label="Step Title" value={step.title} onChange={(v) => updateStepTitle(step.id, v)} />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-[#0a0e27] dark:text-white">Fields</span>
-                  <button onClick={() => addField(step.id)} className="flex items-center gap-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded-lg transition-colors"><Plus className="w-3 h-3" /> Add Field</button>
+                  <button onClick={() => addField(step.id)} className="flex items-center gap-1 px-2 py-1 bg-brand-500 hover:bg-brand-600 text-white text-xs rounded-lg transition-colors"><Plus className="w-3 h-3" /> Add Field</button>
                 </div>
                 {step.fields.map((field) => (
                   <div key={field.id} className="grid grid-cols-1 sm:grid-cols-6 gap-2 items-start bg-slate-50 dark:bg-white/5 rounded-lg p-3">
                     <div className="sm:col-span-2"><Field label="Label" value={field.label} onChange={(v) => updateField(step.id, field.id, 'label', v)} /></div>
                     <div className="sm:col-span-1">
                       <label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Type</label>
-                      <select value={field.type} onChange={(e) => updateField(step.id, field.id, 'type', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <select value={field.type} onChange={(e) => updateField(step.id, field.id, 'type', e.target.value)} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                         <option value="text">Text</option>
                         <option value="email">Email</option>
                         <option value="select">Select</option>
@@ -1234,14 +1287,14 @@ function ProjectsEditor({ config, onSaveProjects, editingProject, setEditingProj
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Projects</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your portfolio projects</p></div>
-        <button onClick={() => setEditingProject({ id: generateId(), title: '', client: '', industry: '', location: '', year: '', type: 'Web Apps', description: '', longDescription: '', features: [], results: [], techStack: [], liveUrl: '', screenshots: [] })} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Project</button>
+        <button onClick={() => setEditingProject({ id: generateId(), title: '', client: '', industry: '', location: '', year: '', type: 'Web Apps', description: '', longDescription: '', features: [], results: [], techStack: [], liveUrl: '', screenshots: [] })} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Project</button>
       </div>
       {projects.length === 0 ? (
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><Rocket className="w-8 h-8 text-blue-500" /></div>
+          <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><Rocket className="w-8 h-8 text-brand-500" /></div>
           <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No projects yet</h3>
           <p className="text-sm text-muted-foreground mb-4">Add your first project to showcase your work.</p>
-          <button onClick={() => setEditingProject({ id: generateId(), title: '', client: '', industry: '', location: '', year: '', type: 'Web Apps', description: '', longDescription: '', features: [], results: [], techStack: [], liveUrl: '', screenshots: [] })} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Project</button>
+          <button onClick={() => setEditingProject({ id: generateId(), title: '', client: '', industry: '', location: '', year: '', type: 'Web Apps', description: '', longDescription: '', features: [], results: [], techStack: [], liveUrl: '', screenshots: [] })} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Project</button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -1277,7 +1330,7 @@ function ProjectForm({ project, onSave, onCancel }: { project: Project; onSave: 
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form?.title ? 'Edit Project' : 'Add Project'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
@@ -1290,10 +1343,10 @@ function ProjectForm({ project, onSave, onCancel }: { project: Project; onSave: 
           <Field label="Type" value={form?.type || ''} onChange={(v) => setForm({ ...form, type: v })} />
           <Field label="Live URL" value={form?.liveUrl || ''} onChange={(v) => setForm({ ...form, liveUrl: v })} />
         </div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form?.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Long Description</label><textarea value={form?.longDescription || ''} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Features (one per line)</label><textarea value={(form?.features || []).join('\n')} onChange={(e) => setForm({ ...form, features: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Results (one per line)</label><textarea value={(form?.results || []).join('\n')} onChange={(e) => setForm({ ...form, results: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form?.description || ''} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={2} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Long Description</label><textarea value={form?.longDescription || ''} onChange={(e) => setForm({ ...form, longDescription: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={4} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Features (one per line)</label><textarea value={(form?.features || []).join('\n')} onChange={(e) => setForm({ ...form, features: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={4} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Results (one per line)</label><textarea value={(form?.results || []).join('\n')} onChange={(e) => setForm({ ...form, results: e.target.value.split('\n').filter((f) => f.trim()) })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={3} /></div>
         <Field label="Tech Stack (comma-separated)" value={(form?.techStack || []).join(', ')} onChange={(v) => setForm({ ...form, techStack: v.split(',').map((s) => s.trim()) })} />
       </div>
     </div>
@@ -1321,14 +1374,14 @@ function ServicesEditor({ config, onSaveServices, editingService, setEditingServ
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Services</h1><p className="text-sm text-muted-foreground mt-0.5">Manage your services</p></div>
-        <button onClick={() => setEditingService({ id: generateId(), icon: 'Code', title: '', description: '', tags: [] })} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Service</button>
+        <button onClick={() => setEditingService({ id: generateId(), icon: 'Code', title: '', description: '', tags: [] })} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add Service</button>
       </div>
       {config.services.length === 0 ? (
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-indigo-500/10 flex items-center justify-center mx-auto mb-4"><Wrench className="w-8 h-8 text-indigo-500" /></div>
+          <div className="w-16 h-16 rounded-full bg-brand-secondary-500/10 flex items-center justify-center mx-auto mb-4"><Wrench className="w-8 h-8 text-brand-secondary-500" /></div>
           <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No services yet</h3>
           <p className="text-sm text-muted-foreground mb-4">Add your first service to showcase what you offer.</p>
-          <button onClick={() => setEditingService({ id: generateId(), icon: 'Code', title: '', description: '', tags: [] })} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Service</button>
+          <button onClick={() => setEditingService({ id: generateId(), icon: 'Code', title: '', description: '', tags: [] })} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First Service</button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -1355,12 +1408,12 @@ function ServiceForm({ service, onSave, onCancel }: { service: Service; onSave: 
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{form.title ? 'Edit Service' : 'Add Service'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <Field label="Title" value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={3} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Description</label><textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={3} /></div>
         <Field label="Icon (Lucide name)" value={form.icon} onChange={(v) => setForm({ ...form, icon: v })} />
         <Field label="Tags (comma-separated)" value={form.tags.join(', ')} onChange={(v) => setForm({ ...form, tags: v.split(',').map((s) => s.trim()) })} />
       </div>
@@ -1466,7 +1519,7 @@ function StatsEditor({ config, onSaveStats, editingStat, setEditingStat }: { con
       </div>
       {config.stats.length === 0 ? (
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4"><BarChart3 className="w-8 h-8 text-blue-500" /></div>
+          <div className="w-16 h-16 rounded-full bg-brand-500/10 flex items-center justify-center mx-auto mb-4"><BarChart3 className="w-8 h-8 text-brand-500" /></div>
           <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No stats yet</h3>
           <p className="text-sm text-muted-foreground">Add stats to showcase your achievements.</p>
         </div>
@@ -1475,7 +1528,7 @@ function StatsEditor({ config, onSaveStats, editingStat, setEditingStat }: { con
           {config.stats.map((stat) => (
             <div key={stat.id} className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-4 flex items-center justify-between hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="text-2xl font-bold text-blue-500">{stat.value}{stat.suffix}</div>
+                <div className="text-2xl font-bold text-brand-500">{stat.value}{stat.suffix}</div>
                 <div><h3 className="font-medium text-[#0a0e27] dark:text-white">{stat.label}</h3><p className="text-sm text-muted-foreground">Icon: {stat.icon}</p></div>
               </div>
               <button onClick={() => setEditingStat(stat)} className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors"><Edit2 className="w-4 h-4 text-muted-foreground" /></button>
@@ -1495,7 +1548,7 @@ function StatForm({ stat, onSave, onCancel }: { stat: Stat; onSave: (s: Stat) =>
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">Edit Stat</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
@@ -1529,14 +1582,14 @@ function FAQEditor({ config, onSaveFaqs, editingFAQ, setEditingFAQ }: { config: 
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div><h1 className="text-xl font-semibold text-[#0a0e27] dark:text-white">FAQ</h1><p className="text-sm text-muted-foreground mt-0.5">Manage frequently asked questions</p></div>
-        <button onClick={() => setEditingFAQ({ id: generateId(), question: '', answer: '' })} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add FAQ</button>
+        <button onClick={() => setEditingFAQ({ id: generateId(), question: '', answer: '' })} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add FAQ</button>
       </div>
       {config.faqs.length === 0 ? (
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mx-auto mb-4"><HelpCircle className="w-8 h-8 text-orange-500" /></div>
           <h3 className="text-lg font-semibold text-[#0a0e27] dark:text-white mb-2">No FAQs yet</h3>
           <p className="text-sm text-muted-foreground mb-4">Add FAQs to answer common questions.</p>
-          <button onClick={() => setEditingFAQ({ id: generateId(), question: '', answer: '' })} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First FAQ</button>
+          <button onClick={() => setEditingFAQ({ id: generateId(), question: '', answer: '' })} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Plus className="w-4 h-4" /> Add First FAQ</button>
         </div>
       ) : (
         <div className="space-y-3">
@@ -1563,12 +1616,12 @@ function FAQForm({ faq, onSave, onCancel }: { faq: FAQ; onSave: (f: FAQ) => void
         <h2 className="text-xl font-semibold text-[#0a0e27] dark:text-white">{faq.question ? 'Edit FAQ' : 'Add FAQ'}</h2>
         <div className="flex items-center gap-2">
           <button onClick={onCancel} className="px-4 py-2 border border-black/10 dark:border-white/10 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors">Cancel</button>
-          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
+          <button onClick={() => onSave(form)} className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-lg transition-colors"><Save className="w-4 h-4" /> Save</button>
         </div>
       </div>
       <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-xl p-6 space-y-4">
         <Field label="Question" value={form.question} onChange={(v) => setForm({ ...form, question: v })} />
-        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Answer</label><textarea value={form.answer} onChange={(e) => setForm({ ...form, answer: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows={4} /></div>
+        <div><label className="block text-sm font-medium text-[#0a0e27] dark:text-white mb-1.5">Answer</label><textarea value={form.answer} onChange={(e) => setForm({ ...form, answer: e.target.value })} className="w-full px-3 py-2 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500" rows={4} /></div>
       </div>
     </div>
   );

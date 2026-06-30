@@ -77,7 +77,7 @@ function buildContactCards(config: SiteConfig) {
       label: 'Email',
       value: config.contact.email,
       href: `mailto:${config.contact.email}`,
-      color: 'bg-blue-500/10 text-blue-500',
+      color: 'bg-brand-500/10 text-brand-500',
       btnText: 'Send Email',
       external: false,
     });
@@ -88,7 +88,7 @@ function buildContactCards(config: SiteConfig) {
       label: 'Phone',
       value: config.contact.phone,
       href: `tel:${config.contact.phone.replace(/\s/g, '')}`,
-      color: 'bg-indigo-500/10 text-indigo-500',
+      color: 'bg-brand-secondary-500/10 text-brand-secondary-500',
       btnText: 'Call Now',
       external: false,
     });
@@ -99,7 +99,7 @@ function buildContactCards(config: SiteConfig) {
       label: 'Address',
       value: config.contact.address,
       href: '#',
-      color: 'bg-purple-500/10 text-purple-500',
+      color: 'bg-brand-accent-500/10 text-brand-accent-500',
       btnText: 'View Map',
       external: false,
     });
@@ -182,7 +182,7 @@ export function Contact({ config }: ContactProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Get In Touch
             </span>
           </ScrollReveal>
@@ -213,7 +213,7 @@ export function Contact({ config }: ContactProps) {
                       href={card.href}
                       target={card.external ? '_blank' : undefined}
                       rel={card.external ? 'noopener noreferrer' : undefined}
-                      className="block w-full text-center py-2 bg-slate-50 dark:bg-white/5 hover:bg-blue-50 dark:hover:bg-blue-500/10 text-sm font-medium text-blue-600 dark:text-blue-400 rounded-lg transition-colors"
+                      className="block w-full text-center py-2 bg-slate-50 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-sm font-medium text-brand-600 dark:text-brand-400 rounded-lg transition-colors"
                     >
                       {card.btnText}
                     </a>
@@ -240,7 +240,7 @@ export function Contact({ config }: ContactProps) {
                           href={s.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-white/5 hover:bg-blue-50 dark:hover:bg-blue-500/10 text-sm text-[#0a0e27] dark:text-white rounded-lg transition-colors"
+                          className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-white/5 hover:bg-brand-50 dark:hover:bg-brand-500/10 text-sm text-[#0a0e27] dark:text-white rounded-lg transition-colors"
                           title={s.label}
                         >
                           <Icon className="w-4 h-4" />
@@ -264,7 +264,7 @@ export function Contact({ config }: ContactProps) {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                     placeholder="Your name"
                   />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
@@ -275,7 +275,7 @@ export function Contact({ config }: ContactProps) {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                     placeholder="your@email.com"
                   />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -287,7 +287,7 @@ export function Contact({ config }: ContactProps) {
                   type="text"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                   placeholder="How can we help?"
                 />
                 {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
@@ -297,7 +297,7 @@ export function Contact({ config }: ContactProps) {
                 <textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
                   rows={5}
                   placeholder="Tell us about your project..."
                 />
@@ -306,7 +306,7 @@ export function Contact({ config }: ContactProps) {
               <button
                 type="submit"
                 disabled={submitting}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white font-medium rounded-xl transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-50 text-white font-medium rounded-xl transition-colors"
               >
                 {submitting ? (
                   <>

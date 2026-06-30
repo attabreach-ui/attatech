@@ -101,7 +101,7 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Get Started
             </span>
           </ScrollReveal>
@@ -121,8 +121,8 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
             <div className="flex items-center gap-2 mb-8">
               {config.intake.steps.map((s, i) => (
                 <div key={s.id} className="flex-1">
-                  <div className={`h-2 rounded-full transition-all ${i <= currentStep ? 'bg-blue-500' : 'bg-slate-200 dark:bg-white/10'}`} />
-                  <p className={`text-xs mt-2 text-center ${i <= currentStep ? 'text-blue-500 font-medium' : 'text-muted-foreground'}`}>
+                  <div className={`h-2 rounded-full transition-all ${i <= currentStep ? 'bg-brand-500' : 'bg-slate-200 dark:bg-white/10'}`} />
+                  <p className={`text-xs mt-2 text-center ${i <= currentStep ? 'text-brand-500 font-medium' : 'text-muted-foreground'}`}>
                     {s.title}
                   </p>
                 </div>
@@ -157,7 +157,7 @@ export function ProjectIntake({ config }: ProjectIntakeProps) {
               <button
                 onClick={handleNext}
                 disabled={submitting}
-                className="flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white font-medium rounded-xl transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white font-medium rounded-xl transition-colors"
               >
                 {submitting ? (
                   <>
@@ -195,7 +195,7 @@ function FieldRenderer({ field, value, onChange }: { field: IntakeField; value: 
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
         >
           <option value="">{field.placeholder}</option>
           {field.options?.map((opt) => (
@@ -208,7 +208,7 @@ function FieldRenderer({ field, value, onChange }: { field: IntakeField; value: 
           onChange={(e) => onChange(e.target.value)}
           placeholder={field.placeholder}
           rows={4}
-          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
         />
       ) : (
         <input
@@ -216,7 +216,7 @@ function FieldRenderer({ field, value, onChange }: { field: IntakeField; value: 
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={field.placeholder}
-          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
         />
       )}
     </div>

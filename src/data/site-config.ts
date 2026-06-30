@@ -201,4 +201,5 @@ export const defaultConfig: SiteConfig = {
     ],
   },
   formspreeEndpoint: 'https://formspree.io/f/mqevkoao',
+  theme: 'ocean-blue',
 };

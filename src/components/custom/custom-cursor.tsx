@@ -69,8 +69,8 @@ export function CustomCursor() {
     <div
       ref={cursorRef}
       className={cn(
-        'fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border-2 border-blue-500 mix-blend-difference transition-[width,height,border-width] duration-200 ease-out',
-        hovering ? 'w-10 h-10 border-blue-400 bg-blue-500/10' : 'w-2 h-2',
+        'fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border-2 border-brand-500 mix-blend-difference transition-[width,height,border-width] duration-200 ease-out',
+        hovering ? 'w-10 h-10 border-brand-400 bg-brand-500/10' : 'w-2 h-2',
         hidden && 'opacity-0'
       )}
       style={{ willChange: 'transform' }}

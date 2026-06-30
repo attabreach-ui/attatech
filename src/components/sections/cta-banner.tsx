@@ -10,9 +10,9 @@ export function CTABanner({ config }: CTABannerProps) {
   return (
     <section className="py-20 md:py-28 bg-gradient-to-br from-[#0a0e27] via-[#0f1535] to-[#1a1f4d] relative overflow-hidden">
       {/* Animated background shapes */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/10 rounded-full filter blur-3xl animate-blob" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-500/5 rounded-full filter blur-3xl animate-blob animation-delay-4000" />
+      <div className="absolute top-0 left-0 w-72 h-72 bg-brand-500/10 rounded-full filter blur-3xl animate-blob" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-secondary-500/10 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-accent-500/5 rounded-full filter blur-3xl animate-blob animation-delay-4000" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <ScrollReveal>

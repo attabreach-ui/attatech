@@ -19,7 +19,7 @@ export function BlogPostPage({ config }: BlogPostPageProps) {
           <p className="text-muted-foreground mb-6">The blog post you are looking for does not exist.</p>
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
@@ -35,7 +35,7 @@ export function BlogPostPage({ config }: BlogPostPageProps) {
         <ScrollReveal>
           <Link
             to="/blog"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-blue-500 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-brand-500 transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to all posts
@@ -67,7 +67,7 @@ export function BlogPostPage({ config }: BlogPostPageProps) {
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm rounded-full flex items-center gap-1"
+                className="px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm rounded-full flex items-center gap-1"
               >
                 <Tag className="w-3 h-3" />
                 {tag}

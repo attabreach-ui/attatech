@@ -13,7 +13,7 @@ export function Process({ config }: ProcessProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-16">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               How It Works
             </span>
           </ScrollReveal>
@@ -31,7 +31,7 @@ export function Process({ config }: ProcessProps) {
 
         {/* Connecting Line (Desktop) */}
         <div className="hidden lg:block relative">
-          <div className="absolute top-[60px] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-blue-500/30 via-indigo-500/30 to-purple-500/30" />
+          <div className="absolute top-[60px] left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-brand-500/30 via-brand-secondary-500/30 to-brand-accent-500/30" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -49,7 +49,7 @@ export function Process({ config }: ProcessProps) {
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1"
-                        className="text-blue-500/20"
+                        className="text-brand-500/20"
                       />
                       <circle
                         cx="60"
@@ -60,14 +60,14 @@ export function Process({ config }: ProcessProps) {
                         strokeWidth="2"
                         strokeDasharray={`${340 * (i + 1) / 4} 340`}
                         strokeLinecap="round"
-                        className="text-blue-500 transition-all duration-1000"
+                        className="text-brand-500 transition-all duration-1000"
                       />
                     </svg>
-                    <span className="absolute text-4xl font-bold text-blue-500/20 group-hover:text-blue-500/40 transition-colors">
+                    <span className="absolute text-4xl font-bold text-brand-500/20 group-hover:text-brand-500/40 transition-colors">
                       {step.number}
                     </span>
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
-                      <Icon className="w-7 h-7 text-blue-500" />
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-secondary-500/20 flex items-center justify-center">
+                      <Icon className="w-7 h-7 text-brand-500" />
                     </div>
                   </div>
                   <h3 className="text-xl font-semibold text-[#0a0e27] dark:text-white mb-2">

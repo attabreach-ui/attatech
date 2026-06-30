@@ -21,7 +21,7 @@ export function FAQ({ config }: FAQProps) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               FAQ
             </span>
           </ScrollReveal>
@@ -45,14 +45,14 @@ export function FAQ({ config }: FAQProps) {
                   </span>
                   <div
                     className={cn(
-                      'w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0 transition-colors',
-                      openId === faq.id && 'bg-blue-500 text-white'
+                      'w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center shrink-0 transition-colors',
+                      openId === faq.id && 'bg-brand-500 text-white'
                     )}
                   >
                     {openId === faq.id ? (
                       <X className="w-4 h-4" />
                     ) : (
-                      <Plus className="w-4 h-4 text-blue-500" />
+                      <Plus className="w-4 h-4 text-brand-500" />
                     )}
                   </div>
                 </button>

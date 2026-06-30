@@ -41,8 +41,8 @@ export function Hero({ config }: HeroProps) {
           {/* Left: Text Content */}
           <div className="space-y-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 border border-blue-500/20 rounded-full text-blue-600 dark:text-blue-400 text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 border border-brand-500/20 rounded-full text-brand-600 dark:text-brand-400 text-sm font-medium mb-6">
+                <span className="w-2 h-2 bg-brand-500 rounded-full animate-pulse" />
                 {config.company?.tagline || 'AI-Powered Solutions'}
               </div>
 
@@ -58,7 +58,7 @@ export function Hero({ config }: HeroProps) {
                     }}
                   >
                     {word === 'AI-Powered' || word === 'Software' ? (
-                      <span className="bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
+                      <span className="bg-gradient-to-r from-brand-500 to-brand-secondary-500 bg-clip-text text-transparent">
                         {word}
                       </span>
                     ) : (
@@ -81,7 +81,7 @@ export function Hero({ config }: HeroProps) {
                   href={config.hero?.ctaPrimary?.link || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5"
                 >
                   {config.hero?.ctaPrimary?.text || 'Get Started'}
                   <ArrowRight className="w-4 h-4" />
@@ -102,7 +102,7 @@ export function Hero({ config }: HeroProps) {
               <div className="flex flex-wrap items-center gap-4 pt-4">
                 {(config.hero?.trustBar || []).map((item, i) => (
                   <div key={i} className="flex items-center gap-1.5 text-sm text-[#0a0e27]/60 dark:text-white/60">
-                    <Check className="w-4 h-4 text-blue-500" />
+                    <Check className="w-4 h-4 text-brand-500" />
                     {item}
                   </div>
                 ))}
@@ -118,12 +118,12 @@ export function Hero({ config }: HeroProps) {
               onMouseLeave={handleMouseLeave}
             >
               {/* Floating decorative elements */}
-              <div className="absolute -top-6 -left-6 w-20 h-20 bg-blue-500/10 rounded-xl animate-float animation-delay-200 hidden lg:block" />
-              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-indigo-500/10 rounded-full animate-float animation-delay-500 hidden lg:block" />
-              <div className="absolute top-1/2 -right-8 w-12 h-12 bg-purple-500/10 rounded-lg rotate-45 animate-float-slow hidden lg:block" />
+              <div className="absolute -top-6 -left-6 w-20 h-20 bg-brand-500/10 rounded-xl animate-float animation-delay-200 hidden lg:block" />
+              <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-brand-secondary-500/10 rounded-full animate-float animation-delay-500 hidden lg:block" />
+              <div className="absolute top-1/2 -right-8 w-12 h-12 bg-brand-accent-500/10 rounded-lg rotate-45 animate-float-slow hidden lg:block" />
 
               <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-blue-500/10 border border-white/20 transition-transform duration-200 ease-out"
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-brand-500/10 border border-white/20 transition-transform duration-200 ease-out"
                 style={{
                   transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
                 }}
@@ -183,7 +183,7 @@ function GenericHeroVisual() {
 
       {/* Floating code blocks */}
       <div className={`absolute top-[15%] left-[8%] w-[55%] transition-all duration-1000 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-blue-500/20 p-3 shadow-lg">
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-brand-500/20 p-3 shadow-lg">
           <div className="flex items-center gap-1.5 mb-2">
             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
@@ -191,30 +191,30 @@ function GenericHeroVisual() {
             <span className="ml-2 text-[10px] text-slate-400 font-mono">app.tsx</span>
           </div>
           <div className="space-y-1.5">
-            <div className="h-1.5 w-[80%] bg-blue-500/30 rounded" />
-            <div className="h-1.5 w-[60%] bg-indigo-500/30 rounded" />
-            <div className="h-1.5 w-[70%] bg-purple-500/30 rounded" />
-            <div className="h-1.5 w-[40%] bg-blue-500/20 rounded" />
+            <div className="h-1.5 w-[80%] bg-brand-500/30 rounded" />
+            <div className="h-1.5 w-[60%] bg-brand-secondary-500/30 rounded" />
+            <div className="h-1.5 w-[70%] bg-brand-accent-500/30 rounded" />
+            <div className="h-1.5 w-[40%] bg-brand-500/20 rounded" />
           </div>
         </div>
       </div>
 
       <div className={`absolute top-[42%] right-[5%] w-[45%] transition-all duration-1000 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-indigo-500/20 p-3 shadow-lg">
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-brand-secondary-500/20 p-3 shadow-lg">
           <div className="flex items-center gap-1.5 mb-2">
-            <Database className="w-3 h-3 text-indigo-400" />
+            <Database className="w-3 h-3 text-brand-secondary-400" />
             <span className="text-[10px] text-slate-400 font-mono">schema.sql</span>
           </div>
           <div className="space-y-1.5">
-            <div className="h-1.5 w-[65%] bg-indigo-500/30 rounded" />
-            <div className="h-1.5 w-[50%] bg-blue-500/20 rounded" />
-            <div className="h-1.5 w-[75%] bg-purple-500/20 rounded" />
+            <div className="h-1.5 w-[65%] bg-brand-secondary-500/30 rounded" />
+            <div className="h-1.5 w-[50%] bg-brand-500/20 rounded" />
+            <div className="h-1.5 w-[75%] bg-brand-accent-500/20 rounded" />
           </div>
         </div>
       </div>
 
       <div className={`absolute bottom-[12%] left-[15%] w-[40%] transition-all duration-1000 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-purple-500/20 p-3 shadow-lg">
+        <div className="bg-[#1e293b]/80 backdrop-blur-sm rounded-lg border border-brand-accent-500/20 p-3 shadow-lg">
           <div className="flex items-center gap-1.5 mb-2">
             <Shield className="w-3 h-3 text-green-400" />
             <span className="text-[10px] text-slate-400 font-mono">security.config</span>
@@ -228,24 +228,24 @@ function GenericHeroVisual() {
 
       {/* Floating icons */}
       <div className="absolute top-[8%] right-[20%] animate-float-slow">
-        <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/20">
-          <Code2 className="w-5 h-5 text-blue-400" />
+        <div className="w-10 h-10 bg-brand-500/10 rounded-lg flex items-center justify-center border border-brand-500/20">
+          <Code2 className="w-5 h-5 text-brand-400" />
         </div>
       </div>
       <div className="absolute bottom-[25%] right-[12%] animate-float animation-delay-300">
-        <div className="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center border border-indigo-500/20">
-          <Layers className="w-5 h-5 text-indigo-400" />
+        <div className="w-10 h-10 bg-brand-secondary-500/10 rounded-lg flex items-center justify-center border border-brand-secondary-500/20">
+          <Layers className="w-5 h-5 text-brand-secondary-400" />
         </div>
       </div>
       <div className="absolute top-[55%] left-[5%] animate-float animation-delay-500">
-        <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center border border-purple-500/20">
-          <Zap className="w-5 h-5 text-purple-400" />
+        <div className="w-10 h-10 bg-brand-accent-500/10 rounded-lg flex items-center justify-center border border-brand-accent-500/20">
+          <Zap className="w-5 h-5 text-brand-accent-400" />
         </div>
       </div>
 
       {/* Glowing orbs */}
-      <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-indigo-500/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 left-1/3 w-32 h-32 bg-brand-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/4 w-24 h-24 bg-brand-secondary-500/10 rounded-full blur-3xl" />
     </div>
   );
 }

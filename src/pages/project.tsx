@@ -26,7 +26,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
           <p className="text-muted-foreground mb-6">The project you are looking for does not exist.</p>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-xl transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -42,7 +42,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
         <ScrollReveal>
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-blue-500 transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-brand-500 transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to portfolio
@@ -59,7 +59,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-              <span className="px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded-full mb-3 inline-block">
+              <span className="px-3 py-1 bg-brand-500 text-white text-xs font-medium rounded-full mb-3 inline-block">
                 {project.type}
               </span>
               <h1 className="text-2xl md:text-4xl font-bold text-white mb-2">
@@ -88,7 +88,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {project.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-brand-500 shrink-0 mt-0.5" />
                     <span className="text-[#0a0e27]/70 dark:text-white/70 text-sm">{f}</span>
                   </li>
                 ))}
@@ -135,7 +135,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
                   {project.techStack.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1.5 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm rounded-lg"
+                      className="px-3 py-1.5 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm rounded-lg"
                     >
                       {tech}
                     </span>
@@ -177,7 +177,7 @@ export function ProjectPage({ config }: ProjectPageProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block w-full text-center py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="block w-full text-center py-3 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <ExternalLink className="w-4 h-4" />
                 View Live Demo

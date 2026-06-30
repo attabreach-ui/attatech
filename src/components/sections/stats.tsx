@@ -20,8 +20,8 @@ export function Stats({ config }: StatsProps) {
               <ScrollReveal key={stat.id} delay={i * 0.1}>
                 <div className="group relative bg-slate-50 dark:bg-white/5 backdrop-blur-sm border border-black/5 dark:border-white/10 rounded-2xl p-6 hover:-translate-y-2 transition-all duration-300 glow-blue-hover">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center shrink-0">
-                      <Icon className="w-6 h-6 text-blue-500" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-secondary-500/20 flex items-center justify-center shrink-0">
+                      <Icon className="w-6 h-6 text-brand-500" />
                     </div>
                     <div>
                       <div className="text-3xl font-bold text-[#0a0e27] dark:text-white">

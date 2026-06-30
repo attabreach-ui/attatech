@@ -50,13 +50,13 @@ export function Newsletter({ config }: NewsletterProps) {
 
   return (
     <section className="py-20 md:py-28 bg-gradient-to-br from-[#0a0e27] via-[#0f1535] to-[#1a1f4d] relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/10 rounded-full filter blur-3xl animate-blob" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
+      <div className="absolute top-0 left-0 w-72 h-72 bg-brand-500/10 rounded-full filter blur-3xl animate-blob" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-brand-secondary-500/10 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <ScrollReveal>
-          <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Mail className="w-8 h-8 text-blue-400" />
+          <div className="w-16 h-16 bg-brand-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Mail className="w-8 h-8 text-brand-400" />
           </div>
         </ScrollReveal>
 
@@ -85,13 +85,13 @@ export function Newsletter({ config }: NewsletterProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-5 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-brand-500"
                 required
               />
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="px-6 py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

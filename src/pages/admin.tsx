@@ -56,7 +56,7 @@ export function AdminPage({
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] to-[#1a1f4d] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-brand-400 animate-spin" />
       </div>
     );
   }

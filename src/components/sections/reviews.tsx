@@ -133,7 +133,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-14">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Testimonials
             </span>
           </ScrollReveal>
@@ -150,12 +150,12 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
             <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-8 h-full">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center h-full min-h-[250px] text-center">
-                  <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-3" />
+                  <Loader2 className="w-8 h-8 text-brand-500 animate-spin mb-3" />
                   <p className="text-muted-foreground text-sm">Loading reviews...</p>
                 </div>
               ) : approved.length > 0 ? (
                 <>
-                  <Quote className="w-10 h-10 text-blue-500/30 mb-4" />
+                  <Quote className="w-10 h-10 text-brand-500/30 mb-4" />
                   <div className="relative min-h-[200px]">
                     {approved.map((t, i) => (
                       <div
@@ -170,7 +170,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                           &ldquo;{t.text}&rdquo;
                         </p>
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white font-bold text-sm">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-500 to-brand-secondary-500 flex items-center justify-center text-white font-bold text-sm">
                             {getInitials(t.name)}
                           </div>
                           <div>
@@ -190,7 +190,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                             onClick={() => setCurrentSlide(i)}
                             className={cn(
                               'w-2 h-2 rounded-full transition-all',
-                              i === currentSlide ? 'w-6 bg-blue-500' : 'bg-blue-500/30'
+                              i === currentSlide ? 'w-6 bg-brand-500' : 'bg-brand-500/30'
                             )}
                           />
                         ))}
@@ -208,7 +208,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                 </>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full min-h-[250px] text-center">
-                  <Quote className="w-12 h-12 text-blue-500/30 mb-4" />
+                  <Quote className="w-12 h-12 text-brand-500/30 mb-4" />
                   <p className="text-muted-foreground">No reviews yet. Be the first to leave a review!</p>
                 </div>
               )}
@@ -229,7 +229,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                       placeholder="Your name"
                       required
                       disabled={isSubmitting}
@@ -241,7 +241,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                       type="text"
                       value={formData.role}
                       onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
                       placeholder="e.g. CEO at ABC"
                       disabled={isSubmitting}
                     />
@@ -256,7 +256,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                   <textarea
                     value={formData.text}
                     onChange={(e) => setFormData({ ...formData, text: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full px-4 py-2.5 rounded-lg border border-black/10 dark:border-white/10 bg-white dark:bg-white/5 text-[#0a0e27] dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
                     rows={4}
                     placeholder="Share your experience..."
                     required
@@ -266,7 +266,7 @@ export function Reviews({ config, onUpdateTestimonials }: ReviewsProps) {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 disabled:opacity-60 disabled:cursor-not-allowed text-white font-medium rounded-xl transition-colors"
                 >
                   {isSubmitting ? (
                     <>

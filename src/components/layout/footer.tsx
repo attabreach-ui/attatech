@@ -98,7 +98,7 @@ export function Footer({ config }: FooterProps) {
             <div className="flex items-center gap-2">
               <img src="/images/logo-at.png" alt="AttaTech" className="h-10 w-10 object-contain" />
               <span className="text-xl font-bold">
-                Atta<span className="text-blue-400">Tech</span>
+                Atta<span className="text-brand-400">Tech</span>
               </span>
             </div>
             <p className="text-white/60 text-sm leading-relaxed">
@@ -116,7 +116,7 @@ export function Footer({ config }: FooterProps) {
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 bg-white/10 hover:bg-blue-500 rounded-lg transition-colors"
+                      className="p-2 bg-white/10 hover:bg-brand-500 rounded-lg transition-colors"
                       aria-label={s.label}
                       title={s.label}
                     >
@@ -134,7 +134,7 @@ export function Footer({ config }: FooterProps) {
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-white/60 hover:text-blue-400 text-sm transition-colors">
+                  <a href={link.href} className="text-white/60 hover:text-brand-400 text-sm transition-colors">
                     {link.label}
                   </a>
                 </li>
@@ -149,7 +149,7 @@ export function Footer({ config }: FooterProps) {
               <ul className="space-y-2">
                 {serviceLinks.map((service) => (
                   <li key={service}>
-                    <a href="/#services" className="text-white/60 hover:text-blue-400 text-sm transition-colors">
+                    <a href="/#services" className="text-white/60 hover:text-brand-400 text-sm transition-colors">
                       {service}
                     </a>
                   </li>
@@ -169,7 +169,7 @@ export function Footer({ config }: FooterProps) {
                   const Icon = item.icon;
                   return (
                     <li key={item.key} className="flex items-start gap-2 text-sm text-white/60">
-                      <Icon className="w-4 h-4 mt-0.5 shrink-0 text-blue-400" />
+                      <Icon className="w-4 h-4 mt-0.5 shrink-0 text-brand-400" />
                       <span>{item.value}</span>
                     </li>
                   );
@@ -187,11 +187,11 @@ export function Footer({ config }: FooterProps) {
             &copy; {new Date().getFullYear()} {config.company?.name || 'AttaTech'}. Built by {config.founder?.name || 'AttaTech Team'}.
           </p>
           <div className="flex items-center gap-4 text-sm text-white/40">
-            <Link to="/admin" className="hover:text-blue-400 transition-colors">Admin</Link>
+            <Link to="/admin" className="hover:text-brand-400 transition-colors">Admin</Link>
             <span className="text-white/20">|</span>
-            <span className="hover:text-blue-400 transition-colors cursor-default">Privacy Policy</span>
+            <span className="hover:text-brand-400 transition-colors cursor-default">Privacy Policy</span>
             <span className="text-white/20">|</span>
-            <span className="hover:text-blue-400 transition-colors cursor-default">Terms</span>
+            <span className="hover:text-brand-400 transition-colors cursor-default">Terms</span>
           </div>
         </div>
       </div>

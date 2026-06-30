@@ -16,7 +16,7 @@ export function BlogPage({ config }: BlogPageProps) {
       <section className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <ScrollReveal>
-            <span className="inline-block px-3 py-1 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-sm font-medium rounded-full mb-4">
               Blog
             </span>
           </ScrollReveal>
@@ -37,8 +37,8 @@ export function BlogPage({ config }: BlogPageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {publishedPosts.length === 0 ? (
             <div className="text-center py-20">
-              <div className="w-20 h-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Calendar className="w-10 h-10 text-blue-500" />
+              <div className="w-20 h-20 bg-brand-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Calendar className="w-10 h-10 text-brand-500" />
               </div>
               <h2 className="text-2xl font-bold text-[#0a0e27] dark:text-white mb-2">
                 Coming Soon
@@ -76,7 +76,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Tag className="w-12 h-12 text-blue-500/30" />
+              <Tag className="w-12 h-12 text-brand-500/30" />
             </div>
           )}
         </div>
@@ -91,7 +91,7 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
               {post.author}
             </span>
           </div>
-          <h3 className="text-lg font-bold text-[#0a0e27] dark:text-white mb-2 group-hover:text-blue-500 transition-colors line-clamp-2">
+          <h3 className="text-lg font-bold text-[#0a0e27] dark:text-white mb-2 group-hover:text-brand-500 transition-colors line-clamp-2">
             {post.title}
           </h3>
           <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
@@ -102,13 +102,13 @@ function BlogCard({ post, index }: { post: BlogPost; index: number }) {
               {post.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-0.5 bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs rounded-md"
+                  className="px-2 py-0.5 bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 text-xs rounded-md"
                 >
                   {tag}
                 </span>
               ))}
             </div>
-            <span className="text-blue-500 text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+            <span className="text-brand-500 text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
               Read <ArrowRight className="w-4 h-4" />
             </span>
           </div>

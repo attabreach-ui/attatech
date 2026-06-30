@@ -28,6 +28,27 @@
     --radius: 0.5rem;
     --navy: 229 56% 10%;
     --electric-blue: 217 91% 60%;
+    /* Brand color system — overridden by ThemeProvider */
+    --brand-primary: 217 91% 60%;
+    --brand-primary-50: 213 100% 97%;
+    --brand-primary-100: 213 94% 94%;
+    --brand-primary-200: 213 94% 87%;
+    --brand-primary-300: 213 94% 78%;
+    --brand-primary-400: 213 94% 68%;
+    --brand-primary-500: 217 91% 60%;
+    --brand-primary-600: 221 83% 53%;
+    --brand-primary-700: 224 76% 48%;
+    --brand-primary-800: 226 71% 40%;
+    --brand-primary-900: 224 64% 33%;
+    --brand-primary-950: 226 57% 21%;
+    --brand-secondary: 239 84% 67%;
+    --brand-secondary-400: 238 83% 72%;
+    --brand-secondary-500: 239 84% 67%;
+    --brand-secondary-600: 243 75% 59%;
+    --brand-accent: 262 83% 58%;
+    --brand-accent-400: 258 90% 66%;
+    --brand-accent-500: 262 83% 58%;
+    --brand-accent-600: 263 70% 50%;
   }
 
   .dark {
@@ -72,7 +93,7 @@
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-400 to-brand-secondary-400 bg-clip-text text-transparent;
   }
 
   .glass {
@@ -89,11 +110,11 @@
 
   .mesh-gradient {
     background:
-      radial-gradient(at 40% 20%, hsla(225, 80%, 50%, 0.15) 0px, transparent 50%),
-      radial-gradient(at 80% 0%, hsla(250, 60%, 50%, 0.1) 0px, transparent 50%),
-      radial-gradient(at 0% 50%, hsla(220, 70%, 45%, 0.1) 0px, transparent 50%),
-      radial-gradient(at 80% 50%, hsla(260, 60%, 45%, 0.08) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, hsla(240, 50%, 40%, 0.1) 0px, transparent 50%);
+      radial-gradient(at 40% 20%, hsla(var(--brand-primary-400), 0.15) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsla(var(--brand-secondary-400), 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsla(var(--brand-primary-300), 0.1) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, hsla(var(--brand-accent-400), 0.08) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(var(--brand-secondary-300), 0.1) 0px, transparent 50%);
   }
 
   .noise-overlay {
@@ -124,11 +145,11 @@
   }
 
   .glow-blue {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 40px hsla(var(--brand-primary-500), 0.2);
   }
 
   .glow-blue-hover:hover {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 40px hsla(var(--brand-primary-500), 0.3);
   }
 
   .border-gradient {
@@ -142,7 +163,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, #6366f1, #3b82f6);
+    background: linear-gradient(90deg, hsl(var(--brand-secondary-500)), hsl(var(--brand-primary-500)));
     border-radius: 2px 2px 0 0;
     opacity: 0;
     transition: opacity 0.3s ease;
