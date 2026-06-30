@@ -7,6 +7,26 @@ import type {
   NewsletterConfig, IntakeConfig
 } from '@/types';
 
+// ─── localStorage helpers for theme fallback ──────────────────────────────────
+
+const THEME_STORAGE_KEY = 'attatech-theme';
+
+function loadThemeFromStorage(): string | null {
+  try {
+    return localStorage.getItem(THEME_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveThemeToStorage(theme: string) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch {
+    // ignore
+  }
+}
+
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
@@ -25,6 +45,10 @@ function mapSettings(row: Record<string, unknown>): Partial<SiteConfig> {
   if (row.newsletter != null) result.newsletter = row.newsletter as SiteConfig['newsletter'];
   if (row.intake != null) result.intake = row.intake as SiteConfig['intake'];
   if (row.theme != null) result.theme = row.theme as string;
+  else {
+    const stored = loadThemeFromStorage();
+    if (stored) result.theme = stored;
+  }
   const fse = (row.formspree_endpoint as string) || '';
   result.formspreeEndpoint = fse.includes('YOUR_FORM_ID') ? defaultConfig.formspreeEndpoint : (fse || defaultConfig.formspreeEndpoint);
   return result;
@@ -93,7 +117,10 @@ function mapReviews(rows: Record<string, unknown>[]): Testimonial[] {
 // ─── hook ───────────────────────────────────────────────────────────────────
 
 export function useSiteConfig() {
-  const [config, setConfig] = useState<SiteConfig>(defaultConfig);
+  const [config, setConfig] = useState<SiteConfig>(() => {
+    const storedTheme = loadThemeFromStorage();
+    return storedTheme ? { ...defaultConfig, theme: storedTheme } : defaultConfig;
+  });
   const [loading, setLoading] = useState(true);
   const [dbAvailable, setDbAvailable] = useState(false);
 
@@ -142,6 +169,23 @@ export function useSiteConfig() {
 
   useEffect(() => {
     fetchAll();
+
+    // Subscribe to real-time changes on site_settings so ALL devices auto-update
+    const channel = supabase
+      .channel('site-settings-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'site_settings' },
+        () => {
+          // Refetch whenever site_settings changes in DB
+          fetchAll();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [fetchAll]);
 
   // ── Admin write helpers ──────────────────────────────────────────────────
@@ -182,6 +226,10 @@ export function useSiteConfig() {
       if (partial.newsletter !== undefined) newFields.newsletter = partial.newsletter;
       if (partial.intake !== undefined) newFields.intake = partial.intake;
       if (partial.formspreeEndpoint !== undefined) newFields.formspree_endpoint = partial.formspreeEndpoint;
+      if (partial.theme !== undefined) {
+        newFields.theme = partial.theme;
+        saveThemeToStorage(partial.theme);
+      }
 
       if (Object.keys(newFields).length > 0) {
         const { error: newError } = await supabase.from('site_settings').update(newFields).eq('id', 1);

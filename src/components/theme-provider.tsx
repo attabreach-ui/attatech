@@ -26,5 +26,23 @@ export function ThemeProvider({ themeId, children }: ThemeProviderProps) {
     style.textContent = css;
   }, [css]);
 
+  // Cross-tab sync: if another tab changes the theme in localStorage, update immediately
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'attatech-theme' && e.newValue) {
+        const newCss = generateThemeCSS(e.newValue);
+        let style = document.getElementById('attatech-theme-vars') as HTMLStyleElement | null;
+        if (!style) {
+          style = document.createElement('style');
+          style.id = 'attatech-theme-vars';
+          document.head.appendChild(style);
+        }
+        style.textContent = newCss;
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
   return <>{children}</>;
 }
